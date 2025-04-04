@@ -1,4 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
+import { AuthService } from './services/auth.service';
+import { IonMenu, MenuController } from '@ionic/angular';
+
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -6,14 +9,25 @@ import { Component } from '@angular/core';
   standalone: false,
 })
 export class AppComponent {
-  public appPages = [
-    { title: 'Inbox', url: '/folder/inbox', icon: 'mail' },
-    { title: 'Outbox', url: '/folder/outbox', icon: 'paper-plane' },
-    { title: 'Favorites', url: '/folder/favorites', icon: 'heart' },
-    { title: 'Archived', url: '/folder/archived', icon: 'archive' },
-    { title: 'Trash', url: '/folder/trash', icon: 'trash' },
-    { title: 'Spam', url: '/folder/spam', icon: 'warning' },
-  ];
-  public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
-  constructor() {}
+  @ViewChild('menu', { static: false }) menu!: IonMenu;
+
+  constructor(private menuCtrl: MenuController, private authService: AuthService){}
+  logout() {
+    this.authService.logout();
+  }
+  upload() {
+    this.authService.upload();
+  }
+  isAuthenticated(): boolean {
+    return this.authService.isAuthenticated();
+  }
+   toggleMenu() {
+    this.menu.isOpen().then(isOpen => {
+      if (isOpen) {
+        this.menu.close();
+      } else {
+        this.menu.open();
+      }
+    });
+  }
 }

@@ -1,0 +1,55 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Registro</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form (submit)="register()">
+    <ion-item>
+      <ion-icon name="person-outline" slot="start"></ion-icon>
+      <ion-label position="floating">Usuario</ion-label>
+      <ion-input [(ngModel)]="username" name="username" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+      <ion-label position="floating">Contraseña</ion-label>
+      <ion-input type="password" [(ngModel)]="password" name="password" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-icon name="shield-checkmark-outline" slot="start"></ion-icon>
+      <ion-label position="floating">Permisos</ion-label>
+      <ion-select [(ngModel)]="permisos_vistas" multiple="true" name="permisos_vistas" required>
+        <ion-select-option value="upload">Subir Archivos</ion-select-option>
+        <ion-select-option value="totalingreso">Total Ingreso</ion-select-option>
+        <ion-select-option value="dia-ingreso">Ingreso del dia</ion-select-option>
+        <ion-select-option value="oficina-ingreso">Ingreso por oficina</ion-select-option>
+        <ion-select-option value="ruta-ingreso">Ingreso por ruta</ion-select-option>
+        <ion-select-option value="pie-ruta-ingreso">Ingreso por ruta pie</ion-select-option>
+        <ion-select-option value="auto-ingreso">Ingreso por placa</ion-select-option>
+        <ion-select-option value="pie-placa-ingreso">Ingreso por placa pie</ion-select-option>
+        <ion-select-option value="turno-ingreso">Ingreso por turno</ion-select-option>
+        <ion-select-option value="pie-ruta-placa-ingreso">Ingreso por placa-ruta</ion-select-option>
+        <ion-select-option value="comparacion-ingresos">Comparacion de ingresos</ion-select-option>
+        <ion-select-option value="user-list">Ver usuarios</ion-select-option>
+        <ion-select-option value="user-create">Crear usuarios</ion-select-option>
+        <ion-select-option value="edit-user/:username">Editar y eliminar usuarios</ion-select-option>
+      </ion-select>
+    </ion-item>
+    
+    
+
+    <div class="button-group">
+      <ion-button expand="full" type="submit">
+        <ion-icon name="person-add-outline" slot="start"></ion-icon>
+        Registrarse
+      </ion-button>
+      <ion-button expand="full" color="danger" (click)="cancel()">
+        <ion-icon name="close-circle-outline" slot="start"></ion-icon>
+        Cancelar
+      </ion-button>
+    </div>
+  </form>
+</ion-content>

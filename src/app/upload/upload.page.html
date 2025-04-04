@@ -1,0 +1,14 @@
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Subir Archivo Excel</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      
+      <ion-item>
+        <input type="file" (change)="onFileSelected($event)" accept=".xlsx, .xls"/>
+      </ion-item>
+      <ion-button class="upload-button" (click)="uploadFile()">Subir Archivo</ion-button>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

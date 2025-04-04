@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Login</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="login-container">
+    <ion-card class="login-card">
+      <ion-card-header>
+        <ion-card-title class="title">Iniciar Sesión</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <form (submit)="onLogin()">
+          <ion-item>
+            <ion-icon name="mail-outline" slot="start"></ion-icon>
+            <ion-label position="floating">Usuario</ion-label>
+            <ion-input [(ngModel)]="username" name="email" required (ionInput)="clearErrorMessage()"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+            <ion-label position="floating">Contraseña</ion-label>
+            <ion-input [type]="passwordType" [(ngModel)]="password" name="password" required (ionInput)="clearErrorMessage()"></ion-input>
+            <ion-button fill="clear" (click)="togglePasswordVisibility()" slot="end">
+              <ion-icon [name]="passwordType === 'password' ? 'eye-outline' : 'eye-off-outline'"></ion-icon>
+            </ion-button>
+          </ion-item>
+          <ion-text color="danger" *ngIf="errorMessage">
+            <p class="error-text">{{ errorMessage }}</p>
+          </ion-text>
+
+          <div class="button-group">
+            <ion-button expand="block" fill="solid" color="primary" type="submit">
+              <ion-icon name="log-in-outline" slot="start"></ion-icon>
+              Ingresar
+            </ion-button>
+          </div>
+        </form>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

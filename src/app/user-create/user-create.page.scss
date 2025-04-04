@@ -1,0 +1,19 @@
+ion-item {
+    --border-radius: 10px;
+    --border-color: var(--ion-color-medium);
+    margin-bottom: 10px;
+  }
+  
+  .button-group {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+  }
+  
+  ion-button {
+    flex: 1;
+    margin: 0 5px;
+    font-weight: bold;
+    --border-radius: 8px;
+  }
+  

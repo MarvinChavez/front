@@ -1,10 +1,12 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { RouterModule } from '@angular/router'; // Agrega esto
 
 @Component({
   selector: 'app-folder',
   templateUrl: './folder.page.html',
   styleUrls: ['./folder.page.scss'],
+
   standalone: false,
 })
 export class FolderPage implements OnInit {
@@ -15,4 +17,5 @@ export class FolderPage implements OnInit {
   ngOnInit() {
     this.folder = this.activatedRoute.snapshot.paramMap.get('id') as string;
   }
+
 }

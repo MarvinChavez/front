@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Editar Usuario</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  <form [formGroup]="userForm" (ngSubmit)="updateUser()">
+    <ion-item>
+      <ion-icon name="person-outline" slot="start"></ion-icon>
+      <ion-label position="floating">Usuario</ion-label>
+      <ion-input type="text" formControlName="username"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+      <ion-label position="floating">Nueva Contraseña</ion-label>
+      <ion-input type="password" formControlName="password"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="shield-checkmark-outline" slot="start"></ion-icon>
+      <ion-label position="floating">Permisos</ion-label>
+      <ion-select formControlName="permisos_vistas" multiple="true" required>
+        <ion-select-option value="upload">Subir Archivos</ion-select-option>
+        <ion-select-option value="totalingreso">Total Ingreso</ion-select-option>
+        <ion-select-option value="user-list">Administrador de permisos</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-button expand="full" type="submit" [disabled]="userForm.invalid">Actualizar Usuario</ion-button>
+  </form>
+</ion-content>

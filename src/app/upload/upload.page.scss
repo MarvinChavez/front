@@ -1,0 +1,13 @@
+.upload-button {
+    width: 150px; /* Tamaño fijo para web */
+    height: 2px;
+    max-width: 100%; /* Asegura que no exceda el contenedor */
+  }
+  
+  /* Para pantallas móviles (menos de 768px) */
+  @media screen and (max-width: 768px) {
+    .upload-button {
+      width: 100%; /* En móvil ocupa todo el ancho */
+    }
+  }
+  

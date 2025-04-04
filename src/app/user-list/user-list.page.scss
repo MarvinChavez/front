@@ -1,0 +1,28 @@
+.table-container {
+    margin-top: 10px;
+    text-align: center;
+  }
+  
+  ion-grid {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  
+  .table-header {
+    background: #3880ff;
+    color: white;
+    font-weight: bold;
+    padding: 10px;
+    border-bottom: 2px solid #ddd;
+  }
+  
+  .table-row {
+    border-bottom: 1px solid #ddd;
+    padding: 10px;
+  }
+  
+  ion-button {
+    margin: 0 auto;
+  }
+  

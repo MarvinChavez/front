@@ -102,6 +102,15 @@ ion-menu.ios ion-note {
   padding-left: 16px;
   padding-right: 16px;
 }
+ion-toolbar {
+  --background: var(--ion-color-primary);
+  --color: white;
+}
+
+ion-button {
+  color: white;
+}
+
 
 ion-menu.ios ion-note {
   margin-bottom: 8px;
@@ -116,4 +125,15 @@ ion-note {
 
 ion-item.selected {
   --color: var(--ion-color-primary);
+}
+// Ajusta la posición del botón para ocultar el menú lateral
+.close-menu-btn {
+  position: absolute;
+  right: 10px;
+  top: 5px;
+}
+
+// Ajusta la posición del botón de menú en la toolbar
+ion-toolbar ion-button {
+  margin-left: 10px;
 }

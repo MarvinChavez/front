@@ -1,0 +1,139 @@
+
+<ion-content>
+  <ion-card>
+    <ion-grid class="botones-container">
+      <ion-row class="botones-row">
+        <ion-col class="no-margin" size="auto">
+          <ion-button class="custom-button" fill="outline" routerLink="/dia-ingreso">
+            <small>I. Día</small>
+          </ion-button>
+        </ion-col>
+        <ion-col class="no-margin" size="auto">
+          <ion-button class="custom-button" fill="outline" routerLink="/totalingreso">
+            <small>I. Total</small>
+          </ion-button>
+        </ion-col>
+        <ion-col class="no-margin" size="auto">
+          <ion-button class="custom-button" fill="outline" routerLink="/oficina-ingreso">
+            <small>I. Oficina</small>
+          </ion-button>
+        </ion-col>
+        <ion-col class="no-margin" size="auto">
+          <ion-button class="custom-button" fill="outline" routerLink="/ruta-ingreso">
+            <small>I. Ruta</small>
+          </ion-button>
+        </ion-col>
+        <ion-col class="no-margin" size="auto">
+          <ion-button class="custom-button" fill="outline" routerLink="/pie-ruta-ingreso">
+            <small>I. Ruta Pie</small>
+          </ion-button>
+        </ion-col>
+        <ion-col class="no-margin" size="auto">
+          <ion-button class="custom-button" fill="outline" routerLink="/turno-ingreso">
+            <small>I. Turno</small>
+          </ion-button>
+        </ion-col>
+        <ion-col class="no-margin" size="auto">
+          <ion-button class="custom-button" fill="outline" routerLink="/auto-ingreso">
+            <small>I. Placa</small>
+          </ion-button>
+        </ion-col>
+        <ion-col class="no-margin" size="auto">
+          <ion-button class="custom-button" fill="outline" routerLink="/pie-placa-ingreso">
+            <small>I. Placa Pie</small>
+          </ion-button>
+        </ion-col>
+        <ion-col class="no-margin" size="auto">
+          <ion-button class="custom-button" fill="outline" routerLink="/pie-ruta-placa-ingreso">
+            <small>I. Placa-Ruta</small>
+          </ion-button>
+        </ion-col>
+        <ion-col class="no-margin" size="auto">
+          <ion-button class="custom-button" fill="outline" routerLink="/comparacion-ingresos">
+            <small>I. comparar</small>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    
+    <ion-card-content *ngIf="mostrarFiltros">
+      <ion-button color="secondary" (click)="seleccionTotales()" class="ion-buttonf">Por totales</ion-button>
+    <ion-button color="secondary" (click)="seleccionCiudad()" class="ion-buttonf" >Por oficina</ion-button>
+    <ion-button color="secondary" (click)="seleccionPlaca()" class="ion-buttonf">Por placa</ion-button>
+    <ion-button color="secondary" (click)="seleccionRuta()" class="ion-buttonf">Por ruta</ion-button>
+
+<form (ngSubmit)="obtenerComparacion()">
+    <ion-item *ngIf="mostrarAutos">
+      <ion-label>Placa</ion-label>
+      <ion-select multiple="false" [(ngModel)]="autoId" name="autoId">
+        <ion-select-option *ngFor="let auto of autosDisponibles" [value]="auto.id">
+          {{ auto.placa}}
+        </ion-select-option>
+</ion-select>
+</ion-item>
+<ion-item *ngIf="mostrarOficinas">
+  <ion-label>Oficina</ion-label>
+        <ion-select multiple="false" [(ngModel)]="ciudad" name="ciudad">
+          <ion-select-option *ngFor="let ciudad of ciudadesDisponibles" [value]="ciudad">
+          {{ ciudad }}</ion-select-option>
+        </ion-select>
+</ion-item>
+<ion-item *ngIf="mostrarRutas">
+  <ion-label>Ruta</ion-label>
+        <ion-select multiple="false" [(ngModel)]="rutaId" name="rutaId">
+          <ion-select-option *ngFor="let ruta of rutasDisponibles" [value]="ruta.id">
+            {{ ruta.ciudad_inicial }} - {{ ruta.ciudad_final }}
+          </ion-select-option>
+</ion-select>
+</ion-item>
+<ion-grid>
+  <ion-row>
+    <ion-col size="12" size-lg="6">
+      <ion-item>
+        <ion-label>Fecha Inicio 1:</ion-label>
+        <ion-input type="date" [(ngModel)]="fechaInicio1" name="fechaInicio1"></ion-input>
+      </ion-item>
+    </ion-col>
+    <ion-col size="12" size-lg="6">
+      <ion-item>
+        <ion-label>Fecha Fin 1:</ion-label>
+        <ion-input type="date" [(ngModel)]="fechaFin1" name="fechaFin1"></ion-input>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col size="12" size-lg="6">
+      <ion-item>
+        <ion-label>Fecha Inicio 2:</ion-label>
+        <ion-input type="date" [(ngModel)]="fechaInicio2" name="fechaInicio2"></ion-input>
+      </ion-item>
+    </ion-col>
+    <ion-col size="12" size-lg="6">
+      <ion-item>
+        <ion-label>Fecha Fin 2:</ion-label>
+        <ion-input type="date" [(ngModel)]="fechaFin2" name="fechaFin2"></ion-input>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+</ion-grid>
+    <ion-button expand="full" type="submit">Comparar</ion-button>
+  </form>
+    </ion-card-content>
+
+</ion-card>
+  <div class="boton-container" *ngIf="!mostrarFiltros">
+    <ion-button size="small" color="danger" (click)="limpiarFiltros()" class="ion-buttonf">Limpiar</ion-button>
+  </div>
+<ion-card>
+  <ion-card-content>
+    <p *ngIf="fechaInicio1">{{ fechaInicio1 | date: 'dd/MM/yyyy' }} - {{ fechaFin1 | date: 'dd/MM/yyyy' }}</p>
+    <p *ngIf="montoTotal1">Importe Total: S/ {{ montoTotal1 }} - Pasajeros: {{ totalPasajeros1 | number:'1.0-0' }}</p>
+    <p *ngIf="fechaInicio2">{{ fechaInicio2 | date: 'dd/MM/yyyy' }} - {{ fechaFin2 | date: 'dd/MM/yyyy' }}</p>
+    <p *ngIf="montoTotal2">Importe Total: S/ {{ montoTotal2 }} - Pasajeros: {{ totalPasajeros2 | number:'1.0-0' }}</p>
+  </ion-card-content>
+  <div>
+    <canvas #lineChart style="width: 100%; height: 400px;"></canvas>
+  </div>
+</ion-card>
+
+</ion-content>
