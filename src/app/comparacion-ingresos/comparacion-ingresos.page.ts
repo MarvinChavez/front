@@ -93,7 +93,7 @@ export class ComparacionIngresosPage implements OnInit {
         this.montoTotal1=response.rango_1.monto_total;
         this.totalPasajeros2=response.rango_2.total_pasajeros;
         this.montoTotal2=response.rango_2.monto_total;
-        this.crearGrafico(response);
+        this.crearGraficoLineas(response);
       }, error => {
         console.error('Error obteniendo datos:', error);
       });
@@ -109,7 +109,7 @@ export class ComparacionIngresosPage implements OnInit {
         this.montoTotal1=response.rango_1.monto_total;
         this.totalPasajeros2=response.rango_2.total_pasajeros;
         this.montoTotal2=response.rango_2.monto_total;
-        this.crearGrafico(response);
+        this.crearGraficoLineas(response);
       }, error => {
         console.error('Error obteniendo datos:', error);
       });
@@ -125,7 +125,7 @@ export class ComparacionIngresosPage implements OnInit {
         this.montoTotal1=response.rango_1.monto_total;
         this.totalPasajeros2=response.rango_2.total_pasajeros;
         this.montoTotal2=response.rango_2.monto_total;
-        this.crearGrafico(response);
+        this.crearGraficoLineas(response);
       }, error => {
         console.error('Error obteniendo datos:', error);
       });
@@ -141,113 +141,125 @@ export class ComparacionIngresosPage implements OnInit {
         this.montoTotal1=response.rango_1.monto_total;
         this.totalPasajeros2=response.rango_2.total_pasajeros;
         this.montoTotal2=response.rango_2.monto_total;
-        this.crearGrafico(response);
+        this.crearGraficoLineas(response);
       }, error => {
         console.error('Error obteniendo datos:', error);
       });
     }
   }
 
-  crearGrafico(data: any) {
-    const labels = Array.from(
-      new Set([
-        ...Object.keys(data.rango_1.detalles),
-        ...Object.keys(data.rango_2.detalles)
-      ])
-    ).sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
-  
-    // 🔹 Función para obtener los montos alineados con las fechas ordenadas
-    const obtenerMontos = (detalles: Record<string, { monto: number }>, labels: string[]) =>
-      labels.map(fecha => detalles[fecha]?.monto ?? null); // Usa `null` en lugar de `0` para puntos desconectados
-  
-    const datosMonto1 = obtenerMontos(data.rango_1.detalles, labels);
-    const datosMonto2 = obtenerMontos(data.rango_2.detalles, labels);
-  
-    if (this.chart) {
-      this.chart.destroy(); // 🔄 Eliminar gráfico anterior si existe
-    }
-  
-    this.chart = new Chart(this.lineChartCanvas.nativeElement, {
-      type: 'line',
-      data: {
-        labels: labels,
-        datasets: [
-          {
-            label: 'Rango 1',
-            data: datosMonto1,
-            borderColor: 'blue',
-            backgroundColor: 'blue',
-            fill: false,
-            spanGaps: false
-          },
-          {
-            label: 'Rango 2',
-            data: datosMonto2,
-            borderColor: 'red',
-            backgroundColor: 'red',
-            fill: false,
-            spanGaps: false
-          }
-        ]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            display: true
-          },
-          tooltip: {
-            callbacks: {
-              label: function (context) {
-                let label = 'Monto';
-                if (context.parsed.y !== null) {
-                  label += ': ' + new Intl.NumberFormat('es-PE', {
-                    style: 'currency',
-                    currency: 'PEN'
-                  }).format(context.parsed.y);
-                }
-                return `${label}`;
-              },
-              title: function (context) {
-                return new Date(context[0].parsed.x).toLocaleDateString('es-PE', {
-                  day: 'numeric',
-                  month: 'long'
-                });
-              }
+  crearGraficoLineas(data: any) {
+    const monto1 = data.rango_1.monto_total;
+  const monto2 = data.rango_2.monto_total;
+
+  if (this.chart) {
+    this.chart.destroy(); // Elimina el gráfico anterior si existe
+  }
+
+  this.chart = new Chart(this.lineChartCanvas.nativeElement, {
+    type: 'bar',
+    data: {
+      labels: ['Rango 1', 'Rango 2'],
+      datasets: [{
+        label: 'Monto total',
+        data: [monto1, monto2],
+        backgroundColor: [
+          'rgba(54, 162, 235, 0.7)', // azul
+          'rgba(255, 99, 132, 0.7)'  // rojo
+        ],
+        borderColor: ['#fff', '#fff'],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          display: false
+        },
+        tooltip: {
+          callbacks: {
+            label: function (context) {
+              return new Intl.NumberFormat('es-PE', {
+                style: 'currency',
+                currency: 'PEN'
+              }).format(context.parsed.y);
             }
+          }
+        }
+      },
+      scales: {
+        x: {
+          title: {
+            display: true,
+            text: 'Rangos Comparados',
+            color: '#333',
+            font: { size: 16 }
           }
         },
-        scales: {
-          x: {
-            type: 'time',
-            time: { unit: 'day' },
-            title: {
-              display: true,
-              text: 'Fecha',
-              color: '#333',
-              font: { size: 16 }
-            },
-            grid: { display: false },
-            ticks: {
-              autoSkip: true,
-              maxTicksLimit: 7,
-              maxRotation: 0,
-              minRotation: 0
-            }
+        y: {
+          title: {
+            display: true,
+            text: 'Monto Total (S/.)',
+            color: '#333',
+            font: { size: 16 }
           },
-          y: {
-            title: {
-              display: true,
-              text: 'Importe (S/.)',
-              color: '#333',
-              font: { size: 16 }
-            },
-            grid: { color: 'rgba(200, 200, 200, 0.1)' }
+          beginAtZero: true,
+          grid: { color: 'rgba(200, 200, 200, 0.1)' }
+        }
+      }
+    }
+  });
+  }
+  crearGraficobarras(data: any) {
+    const monto1 = data.rango_1.monto_total;
+  const monto2 = data.rango_2.monto_total;
+  const total = monto1 + monto2;
+
+  if (this.chart) {
+    this.chart.destroy();
+  }
+
+  this.chart = new Chart(this.lineChartCanvas.nativeElement, {
+    type: 'pie',
+    data: {
+      labels: ['Rango 1', 'Rango 2'],
+      datasets: [{
+        data: [monto1, monto2],
+        backgroundColor: [
+          'rgba(54, 162, 235, 0.7)', // azul
+          'rgba(255, 99, 132, 0.7)'  // rojo
+        ],
+        borderColor: '#fff',
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          display: true,
+          position: 'bottom'
+        },
+        tooltip: {
+          callbacks: {
+            label: function (context) {
+              const label = context.label || '';
+              const value = context.parsed;
+              const porcentaje = ((value / total) * 100).toFixed(2);
+              const monto = new Intl.NumberFormat('es-PE', {
+                style: 'currency',
+                currency: 'PEN'
+              }).format(value);
+              return `${label}: ${monto} (${porcentaje}%)`;
+            }
           }
         }
       }
-    });
+    }
+  });
   }
   
   seleccionTotales(): void {
@@ -255,7 +267,6 @@ export class ComparacionIngresosPage implements OnInit {
     this.mostrarOficinas = false; 
     this.mostrarAutos=false;
     this.mostrarRutas=false;
-    this.ingresoTotales=false;
   }
   seleccionCiudad(): void {
     this.mostrarOficinas = true; 

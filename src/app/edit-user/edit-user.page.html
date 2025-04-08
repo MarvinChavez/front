@@ -21,7 +21,18 @@
       <ion-select formControlName="permisos_vistas" multiple="true" required>
         <ion-select-option value="upload">Subir Archivos</ion-select-option>
         <ion-select-option value="totalingreso">Total Ingreso</ion-select-option>
-        <ion-select-option value="user-list">Administrador de permisos</ion-select-option>
+        <ion-select-option value="dia-ingreso">Ingreso del dia</ion-select-option>
+        <ion-select-option value="oficina-ingreso">Ingreso por oficina</ion-select-option>
+        <ion-select-option value="ruta-ingreso">Ingreso por ruta</ion-select-option>
+        <ion-select-option value="pie-ruta-ingreso">Ingreso por ruta pie</ion-select-option>
+        <ion-select-option value="auto-ingreso">Ingreso por placa</ion-select-option>
+        <ion-select-option value="pie-placa-ingreso">Ingreso por placa pie</ion-select-option>
+        <ion-select-option value="turno-ingreso">Ingreso por turno</ion-select-option>
+        <ion-select-option value="pie-ruta-placa-ingreso">Ingreso por placa-ruta</ion-select-option>
+        <ion-select-option value="comparacion-ingresos">Comparacion de ingresos</ion-select-option>
+        <ion-select-option value="user-list">Ver usuarios</ion-select-option>
+        <ion-select-option value="user-create">Crear usuarios</ion-select-option>
+        <ion-select-option value="edit-user/:username">Editar y eliminar usuarios</ion-select-option>
       </ion-select>
     </ion-item>
     <ion-button expand="full" type="submit" [disabled]="userForm.invalid">Actualizar Usuario</ion-button>

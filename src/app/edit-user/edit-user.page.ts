@@ -37,7 +37,7 @@ export class EditUserPage implements OnInit {
       (user) => {
         this.userForm.patchValue({
           username: user.username, 
-          permiso_vistas: user.permisos_vistas
+          permisos_vistas: user.permisos_vistas
         });
       },
       (error) => {

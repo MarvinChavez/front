@@ -126,8 +126,10 @@
   </div>
 <ion-card>
   <ion-card-content>
+    <p *ngIf="fechaInicio1">Rango 1</p>
     <p *ngIf="fechaInicio1">{{ fechaInicio1 | date: 'dd/MM/yyyy' }} - {{ fechaFin1 | date: 'dd/MM/yyyy' }}</p>
     <p *ngIf="montoTotal1">Importe Total: S/ {{ montoTotal1 }} - Pasajeros: {{ totalPasajeros1 | number:'1.0-0' }}</p>
+    <p *ngIf="fechaInicio1">Rango 2</p>
     <p *ngIf="fechaInicio2">{{ fechaInicio2 | date: 'dd/MM/yyyy' }} - {{ fechaFin2 | date: 'dd/MM/yyyy' }}</p>
     <p *ngIf="montoTotal2">Importe Total: S/ {{ montoTotal2 }} - Pasajeros: {{ totalPasajeros2 | number:'1.0-0' }}</p>
   </ion-card-content>
