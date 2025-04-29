@@ -4,6 +4,11 @@ import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
+
+ // Importas 
+import { environment } from 'src/environments/environment';
+
+
 export interface User {
   id:number;
   username: string;
@@ -15,8 +20,8 @@ export interface User {
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:8000/auth';
-
+  private apiUrl = environment.apiUrl;
+  
   constructor(private http: HttpClient,private router: Router) {}
 
   login(username: string, password: string,empresa_id:number): Observable<any> {
