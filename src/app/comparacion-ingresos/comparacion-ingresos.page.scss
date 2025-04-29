@@ -49,6 +49,25 @@
     --padding-end: 12px;
     font-size: 14px;
   }
+  .grafico-responsive {
+    display: flex;
+    justify-content: left;
+    align-items: left;
+    width: 100%;
+    overflow-x: hidden;
+    padding: 0.5rem;
+  }
+  
+  google-chart {
+    width: auto !important;
+    max-width: 500px; /* O ajústalo según el tamaño ideal */
+    height: auto !important;
+  }
+  
+  
+  
+  
+  
   
 
   

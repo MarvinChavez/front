@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
 import { ComparacionIngresosPageRoutingModule } from './comparacion-ingresos-routing.module';
+import { GoogleChartsModule } from 'angular-google-charts'; // ✅ Importar el módulo
 
 import { ComparacionIngresosPage } from './comparacion-ingresos.page';
 
@@ -13,7 +14,8 @@ import { ComparacionIngresosPage } from './comparacion-ingresos.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    ComparacionIngresosPageRoutingModule
+    ComparacionIngresosPageRoutingModule,
+    GoogleChartsModule 
   ],
   declarations: [ComparacionIngresosPage]
 })

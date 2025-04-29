@@ -36,22 +36,27 @@ export class OficinaIngresoPage implements OnInit {
   datosMostrados: any[] = []; 
   contador:number=1;
   mostrarFiltros: boolean = true; 
+  empresa_id: number = 0;
 
   constructor(private ingresoService: IngresoService) {}
   
   ngOnInit(): void {
+    const storedId = localStorage.getItem('empresa_id');
+    if (storedId) {
+      this.empresa_id = parseInt(storedId, 10);
+    }
     this.obtenerCiudades();
     this.obtenerFechaUltima();
 
   }
   obtenerFechaUltima(): void {
-    this.ingresoService.obtenerFecha().subscribe(fecha => {
+    this.ingresoService.obtenerFecha(this.empresa_id).subscribe(fecha => {
         this.fechadevuelta = new Date(fecha);
         this.setPeriodo('semana');
     });
 }
   obtenerCiudades(): void {
-    this.ingresoService.obtenerCiudades().subscribe((data: string[]) => {
+    this.ingresoService.obtenerCiudades(this.empresa_id).subscribe((data: string[]) => {
       this.ciudadesDisponibles = data;
     }, error => {
       console.error('Error al obtener ciudades:', error);
@@ -67,7 +72,7 @@ export class OficinaIngresoPage implements OnInit {
     const fechaInicioFormatted = this.fecha_inicio.split('T')[0];
     const fechaFinFormatted = this.fecha_fin.split('T')[0];
 
-    this.ingresoService.obtenerIngresosTOficina(fechaInicioFormatted, fechaFinFormatted, this.servicio, this.ciudades).subscribe(data => {
+    this.ingresoService.obtenerIngresosTOficina(fechaInicioFormatted, fechaFinFormatted, this.servicio, this.ciudades,this.empresa_id).subscribe(data => {
       this.ciudadesm = data.ciudades;
       let todasLasFechas: string[] = [];
       this.montoTotal=data.total_general;
@@ -132,19 +137,29 @@ export class OficinaIngresoPage implements OnInit {
               }
             },
             tooltip: {
+              enabled: true,
               callbacks: {
                 label: function (context) {
                   let label = 'Monto';
                   if (context.parsed.y !== null) {
-                    label += ': ' + new Intl.NumberFormat('es-PE', { style: 'currency', currency: 'PEN' }).format(context.parsed.y);
+                    label += ': ' + new Intl.NumberFormat('es-PE', {
+                      style: 'currency',
+                      currency: 'PEN'
+                    }).format(context.parsed.y);
                   }
-                  let pasajeros = (context.dataset as any).pasajerosData?.[context.dataIndex] ?? 0;
+                  const pasajeros = (context.dataset as any).pasajerosData?.[context.dataIndex] ?? 0;
                   return `${label} - Pasajeros: ${pasajeros}`;
                 },
                 title: function (context) {
-                  return new Date(context[0].parsed.x).toLocaleDateString('es-PE', { day: 'numeric', month: 'long' });
+                  return new Date(context[0].parsed.x).toLocaleDateString('es-PE', {
+                    day: 'numeric',
+                    month: 'long'
+                  });
                 }
               }
+            },
+            datalabels: {
+              display: false // <-- Esto asegura que no se muestren labels sobre los puntos
             }
           },
           scales: {
@@ -176,6 +191,7 @@ export class OficinaIngresoPage implements OnInit {
             }
           }
         }
+        
       });
       if(this.contador==1){
         this.mostrarFiltros = true;

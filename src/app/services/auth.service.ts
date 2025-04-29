@@ -9,6 +9,7 @@ export interface User {
   username: string;
   permisos_vistas:string[]
   password?: string; // Opcional
+  empresa_id:number
 }
 @Injectable({
   providedIn: 'root'
@@ -18,24 +19,35 @@ export class AuthService {
 
   constructor(private http: HttpClient,private router: Router) {}
 
-  login(username: string, password: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/login`, { username, password }).pipe(
+  login(username: string, password: string,empresa_id:number): Observable<any> {
+    return this.http.post(`${this.apiUrl}/login`, { username, password,empresa_id }).pipe(
       tap((response: any) => {
         localStorage.setItem('access_token', response.access_token);
         localStorage.setItem('permisos', JSON.stringify(response.permisos)); // Guardar permisos
       })
     );
   }
-  createUser(username:string, permisos_vistas: string[],password: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/register`, { username, permisos_vistas,password });
+  logine(ruc: string, password: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/logine`, { ruc, password }).pipe(
+      tap((response: any) => {
+        localStorage.setItem('empresa_id', response.empresa_id);
+      })
+    );
   }
-  getUsers(): Observable<User[]> {
-    return this.http.get<User[]>(`${this.apiUrl}/users`);
+  createUser(username:string, permisos_vistas: string[],password: string,empresa_id:number): Observable<any> {
+    return this.http.post(`${this.apiUrl}/register`, { username, permisos_vistas,password,empresa_id });
   }
+  getUsers(empresa_id: number): Observable<User[]> {
+    return this.http.get<User[]>(`${this.apiUrl}/usersempresa`, {
+      params: { empresa_id: empresa_id.toString() }
+    });
+  }
+  
   logout(): void {
     localStorage.removeItem('access_token'); 
     localStorage.removeItem('permisos'); 
-    this.router.navigate(['/login']); 
+    localStorage.removeItem('empresa_id'); 
+    this.router.navigate(['/loginempresa']); 
   }
   upload(): void {
     this.router.navigate(['/upload']); 

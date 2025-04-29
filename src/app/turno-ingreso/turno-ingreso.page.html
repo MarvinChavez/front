@@ -146,7 +146,7 @@
   <div class="cards-container">
     <ion-card *ngFor="let item of datosMostrados; let i = index" [style.backgroundColor]="getRandomColor(i)" class="ion-card2">
       <ion-card-content>
-        <p *ngIf="item.promedio" [ngStyle]="{ color: 'black' }">S/. {{ item.promedio }}</p>
+        <p *ngIf="item.monto_promedio" [ngStyle]="{ color: 'black' }">S/. {{ item.monto_promedio }}</p>
         <p *ngIf="item.fecha" [ngStyle]="{ color: 'black' }">{{ item.fecha }}</p>
         <p *ngIf="item.monto" [ngStyle]="{ color: 'black' }">S/. {{ item.monto }}</p>        
       </ion-card-content>

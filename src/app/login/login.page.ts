@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { CommonModule } from '@angular/common';
@@ -13,18 +13,24 @@ import { MenuController } from '@ionic/angular';
   styleUrls: ['./login.page.scss'],
   imports: [CommonModule, IonicModule, FormsModule, RouterModule] // Importa RouterModule aquí
 })
-export class LoginPage {
+export class LoginPage implements OnInit{
   username = '';
   password: string = '';
   passwordType: string = 'password';
   errorMessage: string = "";
-
+  empresa_id: number = 0;
+  ngOnInit() {
+    const storedId = localStorage.getItem('empresa_id');
+    if (storedId) {
+      this.empresa_id = parseInt(storedId, 10);
+    }
+  }
   constructor(private authService: AuthService, private router: Router,private menuCtrl: MenuController) {
     document.body.classList.add('login-page');
   }
 
   onLogin() {
-    this.authService.login(this.username, this.password).subscribe(
+    this.authService.login(this.username, this.password,this.empresa_id).subscribe(
       () => {
         this.router.navigate(['/dia-ingreso']);
       },
@@ -49,7 +55,9 @@ export class LoginPage {
   }
   logout() {
     localStorage.removeItem('access_token'); 
-    this.router.navigate(['/login']); 
+    localStorage.removeItem('permisos'); 
+    localStorage.removeItem('empresa_id'); 
+    this.router.navigate(['/loginempresa']); 
   }
   clearErrorMessage() {
     this.errorMessage = "";

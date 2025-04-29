@@ -20,8 +20,6 @@ canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean 
 
   if (this.comienzo) {
     this.comienzo = false;
-
-    // Si tiene al menos un permiso, redirigir a la primera ruta permitida
     if (permisos.length > 0) {
       const rutaInicial = permisos[0];
       this.ultimaRutaValida = rutaInicial;
@@ -31,9 +29,8 @@ canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean 
         return false;
       }
 
-      return true; // Ya está en la ruta permitida
+      return true; 
     } else {
-      // No tiene permisos, llevar a login
       this.router.navigate(['/login']);
       return false;
     }
@@ -44,8 +41,6 @@ canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean 
     this.router.navigate(['/' + this.ultimaRutaValida]);
     return false;
   }
-
-  // Si tiene permiso, actualizar la última ruta válida
   this.ultimaRutaValida = rutaActual;
   return true;
 }

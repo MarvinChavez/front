@@ -19,14 +19,19 @@ export class DiaIngresoPage implements OnInit {
   montoTotal: number = 0;
   totalPasajeros: number = 0;
   fechadevuelta: Date = new Date();
+  empresa_id: number = 0;
 
   constructor(private ingresoService: IngresoService) {}
   
   ngOnInit(): void {
+    const storedId = localStorage.getItem('empresa_id');
+    if (storedId) {
+      this.empresa_id = parseInt(storedId, 10);
+    }
     this.obtenerFechaUltima(); 
   }
   obtenerFechaUltima(): void {
-    this.ingresoService.obtenerFecha().subscribe(fecha => {
+    this.ingresoService.obtenerFecha(this.empresa_id).subscribe(fecha => {
         this.fechadevuelta = new Date(fecha);
         this.fecha_inicio = this.fechadevuelta.toISOString().split('T')[0]; 
         this.setPeriodo('ruta');
@@ -38,7 +43,7 @@ export class DiaIngresoPage implements OnInit {
       return;
     }
     const fechaInicioFormatted = this.fecha_inicio.split('T')[0];
-    this.ingresoService.obtenerIngresosRuta(fechaInicioFormatted, this.servicio).subscribe(data => {
+    this.ingresoService.obtenerIngresosRuta(fechaInicioFormatted, this.servicio,this.empresa_id).subscribe(data => {
       const rutas = data.labels;
       const montos = data.montos;
       const pasajeros = data.pasajeros;
@@ -53,7 +58,7 @@ export class DiaIngresoPage implements OnInit {
       return;
     }
     const fechaInicioFormatted = this.fecha_inicio.split('T')[0];
-    this.ingresoService.obtenerIngresosOficina(fechaInicioFormatted, this.servicio).subscribe(data => {
+    this.ingresoService.obtenerIngresosOficina(fechaInicioFormatted, this.servicio,this.empresa_id).subscribe(data => {
       const rutas = data.labels;
       const montos = data.montos;
       const pasajeros = data.pasajeros;
@@ -68,7 +73,7 @@ export class DiaIngresoPage implements OnInit {
       return;
     }
     const fechaInicioFormatted = this.fecha_inicio.split('T')[0];
-    this.ingresoService.obtenerIngresosTurno(fechaInicioFormatted, this.servicio).subscribe(data => {
+    this.ingresoService.obtenerIngresosTurno(fechaInicioFormatted, this.servicio,this.empresa_id).subscribe(data => {
       const rutas = data.labels;
       const montos = data.montos;
       const pasajeros = data.pasajeros;

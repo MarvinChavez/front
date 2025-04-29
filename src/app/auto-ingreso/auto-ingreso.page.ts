@@ -41,14 +41,20 @@ export class AutoIngresoPage implements OnInit {
       datosMostrados: any[] = [];
       contador:number=1;
       mostrarFiltros: boolean = true; 
+      empresa_id: number = 0;
+
       constructor(private ingresoService: IngresoService) {}
       
       ngOnInit(): void {
+        const storedId = localStorage.getItem('empresa_id');
+    if (storedId) {
+      this.empresa_id = parseInt(storedId, 10);
+    }
         this.obtenerCiudades();
         this.obtenerFechaUltima();
       }
       obtenerFechaUltima(): void {
-        this.ingresoService.obtenerFecha().subscribe(fecha => {
+        this.ingresoService.obtenerFecha(this.empresa_id).subscribe(fecha => {
             this.fechadevuelta = new Date(fecha);
             this.setPeriodo('semana'); 
         });
@@ -56,7 +62,7 @@ export class AutoIngresoPage implements OnInit {
     
     
       obtenerCiudades(): void {
-        this.ingresoService.obtenerAutos().subscribe((data: Auto[]) => {  // ⬅️ Cambiar `string[]` por `Ruta[]`
+        this.ingresoService.obtenerAutos(this.empresa_id).subscribe((data: Auto[]) => {  // ⬅️ Cambiar `string[]` por `Ruta[]`
           this.autosDisponibles = data;
         }, error => {
           console.error('Error al obtener autos:', error);
@@ -77,7 +83,7 @@ export class AutoIngresoPage implements OnInit {
         const fechaInicioFormatted = this.fecha_inicio.split('T')[0];
         const fechaFinFormatted = this.fecha_fin.split('T')[0];
     
-        this.ingresoService.obtenerIngresosTAuto(fechaInicioFormatted, fechaFinFormatted, this.servicio, this.autos).subscribe(data => {
+        this.ingresoService.obtenerIngresosTAuto(fechaInicioFormatted, fechaFinFormatted, this.servicio, this.autos,this.empresa_id).subscribe(data => {
           this.autosm = data.autos;
           let todasLasFechas: string[] = [];
           this.montoTotal=data.total_general;
@@ -87,7 +93,7 @@ export class AutoIngresoPage implements OnInit {
           });
           todasLasFechas = [...new Set(todasLasFechas)].sort();
     
-          const canvas = document.getElementById('graficoRuta') as HTMLCanvasElement;
+          const canvas = document.getElementById('graficoAuto') as HTMLCanvasElement;
           if (!canvas) return;
     
           const ctx = canvas.getContext('2d');
@@ -142,19 +148,29 @@ export class AutoIngresoPage implements OnInit {
                   }
                 },
                 tooltip: {
+                  enabled: true,
                   callbacks: {
                     label: function (context) {
                       let label = 'Monto';
                       if (context.parsed.y !== null) {
-                        label += ': ' + new Intl.NumberFormat('es-PE', { style: 'currency', currency: 'PEN' }).format(context.parsed.y);
+                        label += ': ' + new Intl.NumberFormat('es-PE', {
+                          style: 'currency',
+                          currency: 'PEN'
+                        }).format(context.parsed.y);
                       }
-                      let pasajeros = (context.dataset as any).pasajerosData?.[context.dataIndex] ?? 0;
+                      const pasajeros = (context.dataset as any).pasajerosData?.[context.dataIndex] ?? 0;
                       return `${label} - Pasajeros: ${pasajeros}`;
                     },
                     title: function (context) {
-                      return new Date(context[0].parsed.x).toLocaleDateString('es-PE', { day: 'numeric', month: 'long' });
+                      return new Date(context[0].parsed.x).toLocaleDateString('es-PE', {
+                        day: 'numeric',
+                        month: 'long'
+                      });
                     }
                   }
+                },
+                datalabels: {
+                  display: false // <-- Esto asegura que no se muestren labels sobre los puntos
                 }
               },
               scales: {
@@ -186,6 +202,7 @@ export class AutoIngresoPage implements OnInit {
                 }
               }
             }
+            
           });
         }, error => {
           console.error('Error al obtener los datos:', error);

@@ -36,21 +36,26 @@ export class PiePlacaIngresoPage implements OnInit {
   contador:number=1;
   mostrarFiltros: boolean = true; 
   fechadevuelta: Date = new Date();
+  empresa_id: number = 0;
 
   constructor(private ingresoService: IngresoService) {}
 
   ngOnInit(): void {
+    const storedId = localStorage.getItem('empresa_id');
+    if (storedId) {
+      this.empresa_id = parseInt(storedId, 10);
+    }
     this.obtenerCiudades();
     this.obtenerFechaUltima(); 
   }
   obtenerFechaUltima(): void {
-    this.ingresoService.obtenerFecha().subscribe(fecha => {
+    this.ingresoService.obtenerFecha(this.empresa_id).subscribe(fecha => {
         this.fechadevuelta = new Date(fecha);
         this.setPeriodo('semana');
     });
 }
   obtenerCiudades(): void {
-    this.ingresoService.obtenerAutos().subscribe(
+    this.ingresoService.obtenerAutos(this.empresa_id).subscribe(
       (data: Auto[]) => {
         this.autosDisponibles = data;
       },
@@ -74,7 +79,7 @@ export class PiePlacaIngresoPage implements OnInit {
     const fechaInicioFormatted = this.fecha_inicio.split('T')[0];
     const fechaFinFormatted = this.fecha_fin.split('T')[0];
 
-    this.ingresoService.obtenerIngresosPPlaca(fechaInicioFormatted, fechaFinFormatted, this.servicio, this.autos).subscribe(
+    this.ingresoService.obtenerIngresosPPlaca(fechaInicioFormatted, fechaFinFormatted, this.servicio, this.autos,this.empresa_id).subscribe(
       (data: IngresoAuto[]) => {
         console.log(data); 
         const data2 = data;

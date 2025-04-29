@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UploadService } from '../services/upload.service'; // ✅ Importar el servicio
 
 @Component({
@@ -7,12 +7,18 @@ import { UploadService } from '../services/upload.service'; // ✅ Importar el s
   templateUrl: './upload.page.html',
   styleUrls: ['./upload.page.scss'],
 })
-export class UploadPage {
+export class UploadPage implements OnInit{
   file: File | null = null;
   isUploading = false; // Para mostrar el estado de carga
+  empresa_id: number = 0;
 
   constructor(private uploadService: UploadService) {} // ✅ Inyectar el servicio
-
+  ngOnInit() {
+    const storedId = localStorage.getItem('empresa_id');
+    if (storedId) {
+      this.empresa_id = parseInt(storedId, 10);
+    }
+  }
   onFileSelected(event: any) {
     const fileInput = event.target as HTMLInputElement;
     if (fileInput.files && fileInput.files.length > 0) {
@@ -30,7 +36,7 @@ export class UploadPage {
     this.isUploading = true; // Mostrar carga
     console.log('Subiendo archivo:', this.file.name);
 
-    this.uploadService.uploadFile(this.file).subscribe({
+    this.uploadService.uploadFile(this.file,this.empresa_id).subscribe({
       next: (response) => {
         console.log('Archivo subido con éxito:', response);
         alert('Archivo subido exitosamente.');

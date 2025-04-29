@@ -3,7 +3,7 @@ import { ElementRef, AfterViewInit } from '@angular/core';
 import { IngresoService } from '../services/ingreso.service';
 import { ChartData, ChartOptions } from 'chart.js';
 import { Chart } from 'chart.js/auto';
-import { ViewChild } from '@angular/core';
+import { ChartType } from 'angular-google-charts';
 import { HttpClient } from '@angular/common/http';
 interface Auto {
   id: number;
@@ -23,16 +23,43 @@ interface Ruta {
 export class ComparacionIngresosPage implements OnInit {
 
   ngOnInit() {
-    
+    const storedId = localStorage.getItem('empresa_id');
+    if (storedId) {
+      this.empresa_id = parseInt(storedId, 10);
+    }
   }
-  @ViewChild('lineChart', { static: false }) lineChartCanvas!: ElementRef<HTMLCanvasElement>;
-  chart: any;
-  mostrarRutas:boolean = false;
-  mostrarOficinas:boolean = false;
-  mostrarAutos:boolean = false;
-  ingresoTotales:boolean = true;
+  chartType: ChartType = ChartType.PieChart;
+  chartDataGoogle: any[] = [];
+  chartColumns: string[] = ['Rango', 'Monto'];
+  chartOptionsGoogle = {
+    title: 'Comparación de ingresos',
+    is3D: true,
+    legend: {
+      position: 'left',
+      textStyle: {
+        fontSize: 10, // tamaño de la fuente
+        fontName: 'Arial', // tipo de fuente
+        color: '#333', // color de la fuente
+      }
+    },
+    isStacked: true,
+    responsive: true,
+    chartArea: { left: 20, top: 40, width: '70%', height: '80%' },
+    slices: {
+      0: { color: '#3366CC' },
+      1: { color: '#DC3912' }
+    }
+  } as any;
+  
+  
+  mostrarGraficoGoogle: boolean = false;
+    chart: any;
+  mostrarRutas: boolean = false;
+  mostrarOficinas: boolean = false;
+  mostrarAutos: boolean = false;
+  ingresoTotales: boolean = true;
   ciudadesDisponibles: string[] = [];
-  ciudad: string= '';
+  ciudad: string = '';
   autoId: number = 0;
   fechaInicio1: string = '';
   fechaFin1: string = '';
@@ -47,34 +74,27 @@ export class ComparacionIngresosPage implements OnInit {
   totalPasajeros2: number = 0;
   chartData: ChartData<'line'> | null = null;
   chartLabels: string[] = [];
-  mostrarFiltros: boolean = true; 
-  contador:number=1;
+  mostrarFiltros: boolean = true;
+  contador: number = 1;
+  empresa_id: number = 0;
 
-  chartOptions: ChartOptions<'line'> = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: { position: 'top' }
-    }
-  };
-
-  constructor(private ingresoService: IngresoService) {}
+  constructor(private ingresoService: IngresoService) { }
   obtenerRutas(): void {
-    this.ingresoService.obtenerRutas().subscribe((data: Ruta[]) => {  // ⬅️ Cambiar `string[]` por `Ruta[]`
+    this.ingresoService.obtenerRutas(this.empresa_id).subscribe((data: Ruta[]) => {  // ⬅️ Cambiar `string[]` por `Ruta[]`
       this.rutasDisponibles = data;
     }, error => {
       console.error('Error al obtener rutas:', error);
     });
   }
   obtenerCiudades(): void {
-    this.ingresoService.obtenerCiudades().subscribe((data: string[]) => {
+    this.ingresoService.obtenerCiudades(this.empresa_id).subscribe((data: string[]) => {
       this.ciudadesDisponibles = data;
     }, error => {
       console.error('Error al obtener ciudades:', error);
     });
   }
   obtenerAutos(): void {
-    this.ingresoService.obtenerAutos().subscribe((data: Auto[]) => {  // ⬅️ Cambiar `string[]` por `Ruta[]`
+    this.ingresoService.obtenerAutos(this.empresa_id).subscribe((data: Auto[]) => {  // ⬅️ Cambiar `string[]` por `Ruta[]`
       this.autosDisponibles = data;
     }, error => {
       console.error('Error al obtener autos:', error);
@@ -85,219 +105,155 @@ export class ComparacionIngresosPage implements OnInit {
       alert('Por favor, completa las fechas.');
       return;
     }
-    this.mostrarFiltros=false;
-    if(this.ingresoTotales){
-      this.ingresoService.obtenerComparacionTotales(this.fechaInicio1, this.fechaFin1, this.fechaInicio2, this.fechaFin2)
-      .subscribe(response => {
-        this.totalPasajeros1=response.rango_1.total_pasajeros;
-        this.montoTotal1=response.rango_1.monto_total;
-        this.totalPasajeros2=response.rango_2.total_pasajeros;
-        this.montoTotal2=response.rango_2.monto_total;
-        this.crearGraficoLineas(response);
-      }, error => {
-        console.error('Error obteniendo datos:', error);
-      });
+    this.mostrarFiltros = false;
+    if (this.ingresoTotales) {
+      this.ingresoService.obtenerComparacionTotales(this.empresa_id,this.fechaInicio1, this.fechaFin1, this.fechaInicio2, this.fechaFin2)
+        .subscribe(response => {
+          this.totalPasajeros1 = response.rango_1.total_pasajeros;
+          this.montoTotal1 = response.rango_1.monto_total;
+          this.totalPasajeros2 = response.rango_2.total_pasajeros;
+          this.montoTotal2 = response.rango_2.monto_total;
+          this.crearGraficoLineas(response);
+        }, error => {
+          console.error('Error obteniendo datos:', error);
+        });
     }
-    if(this.mostrarAutos){
+    if (this.mostrarAutos) {
       if (!this.autoId) {
         alert('Por favor, selecciona el auto.');
         return;
       }
-      this.ingresoService.obtenerComparacionAuto(this.autoId, this.fechaInicio1, this.fechaFin1, this.fechaInicio2, this.fechaFin2)
-      .subscribe(response => {
-        this.totalPasajeros1=response.rango_1.total_pasajeros;
-        this.montoTotal1=response.rango_1.monto_total;
-        this.totalPasajeros2=response.rango_2.total_pasajeros;
-        this.montoTotal2=response.rango_2.monto_total;
-        this.crearGraficoLineas(response);
-      }, error => {
-        console.error('Error obteniendo datos:', error);
-      });
+      this.ingresoService.obtenerComparacionAuto(this.empresa_id,this.autoId, this.fechaInicio1, this.fechaFin1, this.fechaInicio2, this.fechaFin2)
+        .subscribe(response => {
+          this.totalPasajeros1 = response.rango_1.total_pasajeros;
+          this.montoTotal1 = response.rango_1.monto_total;
+          this.totalPasajeros2 = response.rango_2.total_pasajeros;
+          this.montoTotal2 = response.rango_2.monto_total;
+          this.crearGraficoLineas(response);
+        }, error => {
+          console.error('Error obteniendo datos:', error);
+        });
     }
-    if(this.mostrarRutas){
+    if (this.mostrarRutas) {
       if (!this.rutaId) {
         alert('Por favor, selecciona ruta.');
         return;
       }
-      this.ingresoService.obtenerComparacionRuta(this.rutaId, this.fechaInicio1, this.fechaFin1, this.fechaInicio2, this.fechaFin2)
-      .subscribe(response => {
-        this.totalPasajeros1=response.rango_1.total_pasajeros;
-        this.montoTotal1=response.rango_1.monto_total;
-        this.totalPasajeros2=response.rango_2.total_pasajeros;
-        this.montoTotal2=response.rango_2.monto_total;
-        this.crearGraficoLineas(response);
-      }, error => {
-        console.error('Error obteniendo datos:', error);
-      });
+      this.ingresoService.obtenerComparacionRuta(this.empresa_id,this.rutaId, this.fechaInicio1, this.fechaFin1, this.fechaInicio2, this.fechaFin2)
+        .subscribe(response => {
+          this.totalPasajeros1 = response.rango_1.total_pasajeros;
+          this.montoTotal1 = response.rango_1.monto_total;
+          this.totalPasajeros2 = response.rango_2.total_pasajeros;
+          this.montoTotal2 = response.rango_2.monto_total;
+          this.crearGraficoLineas(response);
+        }, error => {
+          console.error('Error obteniendo datos:', error);
+        });
     }
-    if(this.mostrarOficinas){
+    if (this.mostrarOficinas) {
       if (!this.ciudad) {
         alert('Por favor, selecciona ciudad.');
         return;
       }
-      this.ingresoService.obtenerComparacionOficina(this.ciudad, this.fechaInicio1, this.fechaFin1, this.fechaInicio2, this.fechaFin2)
-      .subscribe(response => {
-        this.totalPasajeros1=response.rango_1.total_pasajeros;
-        this.montoTotal1=response.rango_1.monto_total;
-        this.totalPasajeros2=response.rango_2.total_pasajeros;
-        this.montoTotal2=response.rango_2.monto_total;
-        this.crearGraficoLineas(response);
-      }, error => {
-        console.error('Error obteniendo datos:', error);
-      });
+      this.ingresoService.obtenerComparacionOficina(this.empresa_id,this.ciudad, this.fechaInicio1, this.fechaFin1, this.fechaInicio2, this.fechaFin2)
+        .subscribe(response => {
+          this.totalPasajeros1 = response.rango_1.total_pasajeros;
+          this.montoTotal1 = response.rango_1.monto_total;
+          this.totalPasajeros2 = response.rango_2.total_pasajeros;
+          this.montoTotal2 = response.rango_2.monto_total;
+          this.crearGraficoLineas(response);
+        }, error => {
+          console.error('Error obteniendo datos:', error);
+        });
     }
   }
 
   crearGraficoLineas(data: any) {
+    const pasajeros1 = data.rango_1.total_pasajeros;
     const monto1 = data.rango_1.monto_total;
-  const monto2 = data.rango_2.monto_total;
 
-  if (this.chart) {
-    this.chart.destroy(); // Elimina el gráfico anterior si existe
-  }
-
-  this.chart = new Chart(this.lineChartCanvas.nativeElement, {
-    type: 'bar',
-    data: {
-      labels: ['Rango 1', 'Rango 2'],
-      datasets: [{
-        label: 'Monto total',
-        data: [monto1, monto2],
-        backgroundColor: [
-          'rgba(54, 162, 235, 0.7)', // azul
-          'rgba(255, 99, 132, 0.7)'  // rojo
-        ],
-        borderColor: ['#fff', '#fff'],
-        borderWidth: 1
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: {
-          display: false
-        },
-        tooltip: {
-          callbacks: {
-            label: function (context) {
-              return new Intl.NumberFormat('es-PE', {
-                style: 'currency',
-                currency: 'PEN'
-              }).format(context.parsed.y);
-            }
-          }
+    const pasajeros2 = data.rango_2.total_pasajeros;
+    const monto2 = data.rango_2.monto_total;
+    this.chartOptionsGoogle = {
+      title: 'Comparación de ingresos',
+      is3D: true,
+      legend: {
+        position: 'left',
+        textStyle: {
+          fontSize: 10, // tamaño de la fuente
+          fontName: 'Arial', // tipo de fuente
+          color: '#333', // color de la fuente
         }
       },
-      scales: {
-        x: {
-          title: {
-            display: true,
-            text: 'Rangos Comparados',
-            color: '#333',
-            font: { size: 16 }
-          }
-        },
-        y: {
-          title: {
-            display: true,
-            text: 'Monto Total (S/.)',
-            color: '#333',
-            font: { size: 16 }
-          },
-          beginAtZero: true,
-          grid: { color: 'rgba(200, 200, 200, 0.1)' }
-        }
-      }
-    }
-  });
-  }
-  crearGraficobarras(data: any) {
-    const monto1 = data.rango_1.monto_total;
-  const monto2 = data.rango_2.monto_total;
-  const total = monto1 + monto2;
-
-  if (this.chart) {
-    this.chart.destroy();
-  }
-
-  this.chart = new Chart(this.lineChartCanvas.nativeElement, {
-    type: 'pie',
-    data: {
-      labels: ['Rango 1', 'Rango 2'],
-      datasets: [{
-        data: [monto1, monto2],
-        backgroundColor: [
-          'rgba(54, 162, 235, 0.7)', // azul
-          'rgba(255, 99, 132, 0.7)'  // rojo
-        ],
-        borderColor: '#fff',
-        borderWidth: 1
-      }]
-    },
-    options: {
+      isStacked: true,
       responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: {
-          display: true,
-          position: 'bottom'
-        },
-        tooltip: {
-          callbacks: {
-            label: function (context) {
-              const label = context.label || '';
-              const value = context.parsed;
-              const porcentaje = ((value / total) * 100).toFixed(2);
-              const monto = new Intl.NumberFormat('es-PE', {
-                style: 'currency',
-                currency: 'PEN'
-              }).format(value);
-              return `${label}: ${monto} (${porcentaje}%)`;
-            }
-          }
-        }
+      chartArea: { left: 20, top: 40, width: '70%', height: '80%' },
+      slices: {
+        0: { color: '#3366CC' },
+        1: { color: '#DC3912' }
       }
-    }
-  });
+    } as any;
+    this.chartDataGoogle = [
+      [`Rango 1: ${pasajeros1} pasajeros, S/. ${monto1}`, monto1],
+      [`Rango 2: ${pasajeros2} pasajeros, S/. ${monto2}`, monto2]
+    ];
+    this.mostrarGraficoGoogle = true;
   }
   
   seleccionTotales(): void {
-    this.ingresoTotales=true;
-    this.mostrarOficinas = false; 
-    this.mostrarAutos=false;
-    this.mostrarRutas=false;
+    this.ingresoTotales = true;
+    this.mostrarOficinas = false;
+    this.mostrarAutos = false;
+    this.mostrarRutas = false;
   }
   seleccionCiudad(): void {
-    this.mostrarOficinas = true; 
-    this.mostrarAutos=false;
-    this.mostrarRutas=false;
-    this.ingresoTotales=false;
+    this.mostrarOficinas = true;
+    this.mostrarAutos = false;
+    this.mostrarRutas = false;
+    this.ingresoTotales = false;
     this.obtenerCiudades();
   }
   seleccionRuta(): void {
-    this.mostrarRutas = true; 
-    this.mostrarOficinas = false; 
-    this.mostrarAutos=false;
-    this.ingresoTotales=false;
+    this.mostrarRutas = true;
+    this.mostrarOficinas = false;
+    this.mostrarAutos = false;
+    this.ingresoTotales = false;
     this.obtenerRutas();
   }
   seleccionPlaca(): void {
-    this.mostrarAutos = true; 
-    this.mostrarRutas = false; 
-    this.mostrarOficinas = false; 
-    this.ingresoTotales=false;
+    this.mostrarAutos = true;
+    this.mostrarRutas = false;
+    this.mostrarOficinas = false;
+    this.ingresoTotales = false;
     this.obtenerAutos();
   }
   limpiarFiltros(): void {
-    this.mostrarFiltros = true; 
+    this.mostrarFiltros = true;
     this.montoTotal1 = 0;
     this.montoTotal2 = 0;
     this.totalPasajeros1 = 0;
     this.totalPasajeros2 = 0;
-    if (this.chart) {
-      this.chart.destroy();
-    }
+    this.mostrarGraficoGoogle = false;
+    this.chartOptionsGoogle = {
+      title: 'Comparación de ingresos',
+      is3D: true,
+      legend: {
+        position: 'left',
+        textStyle: {
+          fontSize: 10, // tamaño de la fuente
+          fontName: 'Arial', // tipo de fuente
+          color: '#333', // color de la fuente
+        }
+      },
+      isStacked: true,
+      responsive: true,
+      chartArea: { left: 5, top: 20, width: '70%', height: '80%' },
+      slices: {
+        0: { color: '#3366CC' },
+        1: { color: '#DC3912' }
+      }
+    } as any;
+    
   }
 
 }

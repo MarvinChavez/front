@@ -1,0 +1,40 @@
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+  
+  .login-card {
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+  }
+  
+  .title {
+    text-align: center;
+    font-size: 1.4rem;
+    font-weight: bold;
+  }
+  
+  .button-group {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+  }
+  
+  ion-button {
+    flex: 1;
+    margin: 0 5px;
+    font-weight: bold;
+    --border-radius: 8px;
+  }
+  .error-text {
+    text-align: center;
+    font-size: 14px;
+    margin-top: 10px;
+    font-weight: bold;
+  }
+  
+  

@@ -10,12 +10,12 @@ export class UploadService {
 
   constructor(private http: HttpClient) {}
 
-  uploadFile(file: File): Observable<any> {
+  uploadFile(file: File, empresa_id: number): Observable<any> {
     const formData = new FormData();
     formData.append('file', file);
-
-    const headers = new HttpHeaders(); // No es necesario definir `Content-Type`, Angular lo hace automáticamente
-
-    return this.http.post(this.apiUrl, formData, { headers });
+    formData.append('empresa_id', empresa_id.toString());
+  
+    return this.http.post(`${this.apiUrl}`, formData);
   }
+  
 }

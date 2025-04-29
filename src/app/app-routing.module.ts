@@ -1,16 +1,19 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './guards/auth.guard'; // Asegurar la importación
+import { AuthGuardEmpresa } from './guards/authempresa.guard'; // Asegurar la importación
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'login',
+    redirectTo: 'loginempresa',
     pathMatch: 'full'
   },
   {
     path: 'login',
-    loadChildren: () => import('./login/login.module').then(m => m.LoginPageModule)
+    loadChildren: () => import('./login/login.module').then(m => m.LoginPageModule),
+    canActivate: [AuthGuardEmpresa] // Proteger la ruta
+
   },
   {
     path: 'folder',
@@ -86,6 +89,10 @@ const routes: Routes = [
     path: 'comparacion-ingresos',
     loadChildren: () => import('./comparacion-ingresos/comparacion-ingresos.module').then( m => m.ComparacionIngresosPageModule),
     canActivate: [AuthGuard] // Proteger la ruta
+  },
+  {
+    path: 'loginempresa',
+    loadChildren: () => import('./loginempresa/loginempresa.module').then( m => m.LoginempresaPageModule)
   }
 ];
 

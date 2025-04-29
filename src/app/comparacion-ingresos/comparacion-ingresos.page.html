@@ -128,14 +128,23 @@
   <ion-card-content>
     <p *ngIf="fechaInicio1">Rango 1</p>
     <p *ngIf="fechaInicio1">{{ fechaInicio1 | date: 'dd/MM/yyyy' }} - {{ fechaFin1 | date: 'dd/MM/yyyy' }}</p>
-    <p *ngIf="montoTotal1">Importe Total: S/ {{ montoTotal1 }} - Pasajeros: {{ totalPasajeros1 | number:'1.0-0' }}</p>
-    <p *ngIf="fechaInicio1">Rango 2</p>
+    <p *ngIf="montoTotal1">Importe Total: S/ {{ montoTotal1| number:'1.0-0' }} - Pasajeros: {{ totalPasajeros1 | number:'1.0-0' }}</p>
+    <p *ngIf="fechaInicio2">Rango 2</p>
     <p *ngIf="fechaInicio2">{{ fechaInicio2 | date: 'dd/MM/yyyy' }} - {{ fechaFin2 | date: 'dd/MM/yyyy' }}</p>
-    <p *ngIf="montoTotal2">Importe Total: S/ {{ montoTotal2 }} - Pasajeros: {{ totalPasajeros2 | number:'1.0-0' }}</p>
+    <p *ngIf="montoTotal2">Importe Total: S/ {{ montoTotal2| number:'1.0-0' }} - Pasajeros: {{ totalPasajeros2 | number:'1.0-0' }}</p>
   </ion-card-content>
-  <div>
-    <canvas #lineChart style="width: 100%; height: 400px;"></canvas>
-  </div>
+</ion-card>
+<ion-card *ngIf="mostrarGraficoGoogle">
+  <ion-card-content>
+    <div class="grafico-responsive">
+      <google-chart
+        [type]="chartType"
+        [data]="chartDataGoogle"
+        [columns]="chartColumns"
+        [options]="chartOptionsGoogle">
+      </google-chart>
+    </div>
+  </ion-card-content>
 </ion-card>
 
 </ion-content>

@@ -8,7 +8,7 @@ interface Ciudad {
   montos: number[];
   pasajeros: number[];
   total: number;
-  totalp: number;
+  total_pasajeros: number;
 }
 interface Ruta {
   id: number;
@@ -48,22 +48,28 @@ export class TurnoIngresoPage implements OnInit {
       datosMostrados: any[] = []; 
       contador:number=1;
       mostrarFiltros: boolean = true; 
+      empresa_id: number = 0;
+
       constructor(private ingresoService: IngresoService) {}
       
       ngOnInit(): void {
+        const storedId = localStorage.getItem('empresa_id');
+      if (storedId) {
+        this.empresa_id = parseInt(storedId, 10);
+      }
         this.obtenerCiudades();
         this.obtenerRutas();
         this.obtenerFechaUltima();
       }
       obtenerFechaUltima(): void {
-        this.ingresoService.obtenerFecha().subscribe(fecha => {
+        this.ingresoService.obtenerFecha(this.empresa_id).subscribe(fecha => {
             this.fechadevuelta = new Date(fecha); 
             this.setPeriodo('semana'); 
         });
     }
     
       obtenerRutas(): void {
-        this.ingresoService.obtenerRutas().subscribe((data: Ruta[]) => {  // ⬅️ Cambiar `string[]` por `Turno[]`
+        this.ingresoService.obtenerRutas(this.empresa_id).subscribe((data: Ruta[]) => {  // ⬅️ Cambiar `string[]` por `Turno[]`
           this.rutasDisponibles = data;
         }, error => {
           console.error('Error al obtener rutas:', error);
@@ -92,7 +98,7 @@ export class TurnoIngresoPage implements OnInit {
         const fechaInicioFormatted = this.fecha_inicio.split('T')[0];
         const fechaFinFormatted = this.fecha_fin.split('T')[0];
     
-        this.ingresoService.obtenerIngresosTTurno(this.idRuta,fechaInicioFormatted, fechaFinFormatted, this.servicio, this.turnos).subscribe(data => {
+        this.ingresoService.obtenerIngresosTTurno(this.idRuta,fechaInicioFormatted, fechaFinFormatted, this.servicio, this.turnos,this.empresa_id).subscribe(data => {
           this.turnosm = data.turnos;
           let todasLasFechas: string[] = [];
           this.montoTotal=data.total_general;
@@ -125,7 +131,7 @@ export class TurnoIngresoPage implements OnInit {
             });
     
             return {
-              label: `${ciudad.nombre} (Total: S/. ${ciudad.total.toLocaleString('es-PE')} - P=${ciudad.totalp})`,
+              label: `${ciudad.nombre} (Total: S/. ${ciudad.total.toLocaleString('es-PE')} - P=${ciudad.total_pasajeros})`,
               data: montos,
               borderColor: this.getRandomColor(index),
               backgroundColor: this.getRandomColor(index, 0.2),
@@ -157,19 +163,29 @@ export class TurnoIngresoPage implements OnInit {
                   }
                 },
                 tooltip: {
+                  enabled: true,
                   callbacks: {
                     label: function (context) {
                       let label = 'Monto';
                       if (context.parsed.y !== null) {
-                        label += ': ' + new Intl.NumberFormat('es-PE', { style: 'currency', currency: 'PEN' }).format(context.parsed.y);
+                        label += ': ' + new Intl.NumberFormat('es-PE', {
+                          style: 'currency',
+                          currency: 'PEN'
+                        }).format(context.parsed.y);
                       }
-                      let pasajeros = (context.dataset as any).pasajerosData?.[context.dataIndex] ?? 0;
+                      const pasajeros = (context.dataset as any).pasajerosData?.[context.dataIndex] ?? 0;
                       return `${label} - Pasajeros: ${pasajeros}`;
                     },
                     title: function (context) {
-                      return new Date(context[0].parsed.x).toLocaleDateString('es-PE', { day: 'numeric', month: 'long' });
+                      return new Date(context[0].parsed.x).toLocaleDateString('es-PE', {
+                        day: 'numeric',
+                        month: 'long'
+                      });
                     }
                   }
+                },
+                datalabels: {
+                  display: false // <-- Esto asegura que no se muestren labels sobre los puntos
                 }
               },
               scales: {
@@ -201,6 +217,7 @@ export class TurnoIngresoPage implements OnInit {
                 }
               }
             }
+            
           });
         }, error => {
           console.error('Error al obtener los datos:', error);

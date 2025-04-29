@@ -13,15 +13,13 @@
 
     <ion-grid>
       <ion-row class="table-header">
-        <ion-col size="4"><strong>Usuario</strong></ion-col>
-        <ion-col size="4"><strong>Permisos</strong></ion-col>
-        <ion-col size="4"><strong>Acciones</strong></ion-col>
+        <ion-col size="6"><strong>Usuario</strong></ion-col>
+        <ion-col size="6"><strong>Acciones</strong></ion-col>
       </ion-row>
 
       <ion-row *ngFor="let user of users" class="table-row">
-        <ion-col size="4">{{ user.username }}</ion-col>
-        <ion-col size="4">{{ user.permisos_vistas }}</ion-col>
-        <ion-col size="4">
+        <ion-col size="6">{{ user.username }}</ion-col>
+        <ion-col size="6">
           <ion-button fill="outline" color="warning" (click)="editUser(user.username)">
             <ion-icon name="create-outline"></ion-icon>
           </ion-button>     

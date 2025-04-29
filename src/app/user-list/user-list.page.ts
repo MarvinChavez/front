@@ -11,15 +11,20 @@ import { Router } from '@angular/router';
 export class UserListPage implements OnInit {
 
   users: User[] = [];
+  empresa_id:number=0;
 
   constructor(private userService: AuthService,private router: Router) {}
 
   ngOnInit() {
+    const storedId = localStorage.getItem('empresa_id');
+    if (storedId) {
+      this.empresa_id = parseInt(storedId, 10);
+    }
     this.loadUsers();
   }
 
   loadUsers() {
-    this.userService.getUsers().subscribe(
+    this.userService.getUsers(this.empresa_id).subscribe(
       (data) => {
         this.users = data;
       },

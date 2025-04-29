@@ -20,15 +20,20 @@ export class TotalingresoPage {
   mostrarFiltros: boolean = true; 
   contador:number=1;
   fechadevuelta: Date = new Date();
+  empresa_id: number = 0;
 
 
 
   constructor(private ingresoService: IngresoService) {}
   ngOnInit(): void {
+    const storedId = localStorage.getItem('empresa_id');
+      if (storedId) {
+        this.empresa_id = parseInt(storedId, 10);
+      }
     this.obtenerFechaUltima();
   }
   obtenerFechaUltima(): void {
-    this.ingresoService.obtenerFecha().subscribe(fecha => {
+    this.ingresoService.obtenerFecha(this.empresa_id).subscribe(fecha => {
         this.fechadevuelta = new Date(fecha);
         this.setPeriodo('semana');
     });
@@ -41,7 +46,7 @@ export class TotalingresoPage {
     const fechaInicioFormatted = this.fecha_inicio.split('T')[0];
   const fechaFinFormatted = this.fecha_fin.split('T')[0];
 
-    this.ingresoService.obtenerIngresos(fechaInicioFormatted, fechaFinFormatted, this.servicio).subscribe(data => {
+    this.ingresoService.obtenerIngresos(fechaInicioFormatted, fechaFinFormatted, this.servicio,this.empresa_id).subscribe(data => {
       const fechas = data.ingresos.map((item: any) => {
         const fecha = new Date(item.fecha);
         fecha.setDate(fecha.getDate() + 1); // Sumar un día
@@ -117,55 +122,44 @@ export class TotalingresoPage {
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
-          datalabels: {
-            display: false // 🔥 Desactiva etiquetas en los puntos del gráfico
-          },
           legend: {
-            display: false
+            display: true,
+            position: 'top',
+            labels: {
+              color: '#333',
+              font: { size: 14 }
+            }
           },
           tooltip: {
+            enabled: true,
             callbacks: {
-              label: function(context) {
-                let label = context.dataset.label || '';
-                if (label) {
-                  label += ': ';
-                }
+              label: function (context) {
+                let label = 'Monto';
                 if (context.parsed.y !== null) {
-                  label += new Intl.NumberFormat('es-PE', { style: 'currency', currency: 'PEN' }).format(context.parsed.y);
+                  label += ': ' + new Intl.NumberFormat('es-PE', {
+                    style: 'currency',
+                    currency: 'PEN'
+                  }).format(context.parsed.y);
                 }
-                const index = context.dataIndex;
-                const pasajerosCount = pasajeros[index]; 
-                label += ` | Pasajeros: ${pasajerosCount}`;
-                return label;
+                const pasajeros = (context.dataset as any).pasajerosData?.[context.dataIndex] ?? 0;
+                return `${label} - Pasajeros: ${pasajeros}`;
               },
-              title: function(context) {
-                if (!context || !context.length || !context[0].chart) {
-                  return ''; // Retorna una cadena vacía si no hay datos disponibles
-                }
-              
-                const index = context[0].dataIndex;
-                const labels = context[0].chart.data.labels; 
-              
-                if (!labels || !labels[index]) {
-                  return 'Fecha no disponible'; // Evita errores si la fecha no está presente
-                }
-              
-                const fechaStr = String(labels[index]); // Convertir a string explícitamente
-                const fecha = new Date(fechaStr); // Crear objeto Date
-              
-                if (isNaN(fecha.getTime())) { 
-                  return 'Fecha inválida'; // Manejo de error si la conversión falla
-                }
-              
-                return fecha.toLocaleDateString('es-PE', { day: 'numeric', month: 'long' });
+              title: function (context) {
+                return new Date(context[0].parsed.x).toLocaleDateString('es-PE', {
+                  day: 'numeric',
+                  month: 'long'
+                });
               }
-              
             }
+          },
+          datalabels: {
+            display: false // <-- Esto asegura que no se muestren labels sobre los puntos
           }
         },
         scales: {
           x: {
-            type: 'category',
+            type: 'time',
+            time: { unit: 'day' },
             title: {
               display: true,
               text: 'Fecha',
@@ -183,7 +177,7 @@ export class TotalingresoPage {
           y: {
             title: {
               display: true,
-              text: 'Monto (S/.)',
+              text: 'Importe (S/.)',
               color: '#333',
               font: { size: 16 }
             },
@@ -191,6 +185,7 @@ export class TotalingresoPage {
           }
         }
       }
+      
     });
   }
 }

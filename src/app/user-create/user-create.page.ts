@@ -14,16 +14,20 @@ export class UserCreatePage implements OnInit {
   username = '';
   password = '';
   permisos_vistas: string[] = [];  // Se asegura de que sea un array
+  empresa_id:number=0;
   constructor(private authService: AuthService,private navCtrl: NavController,private router: Router) {}
-
+  ngOnInit() {
+    const storedId = localStorage.getItem('empresa_id');
+    if (storedId) {
+      this.empresa_id = parseInt(storedId, 10);
+    }
+  }
   register() {
-    console.log("Permisos seleccionados:", this.permisos_vistas);  // Agrega esta línea
     if (!this.username || !this.password || this.permisos_vistas.length === 0) {
       alert('Todos los campos son obligatorios');
       return;
     }
-  
-    this.authService.createUser(this.username, this.permisos_vistas, this.password).subscribe({
+    this.authService.createUser(this.username, this.permisos_vistas, this.password,this.empresa_id).subscribe({
       next: response => {
         console.log('Registro exitoso:', response);
         this.router.navigate(['/user-list']); 
@@ -41,7 +45,6 @@ export class UserCreatePage implements OnInit {
 
     this.navCtrl.back(); // Regresa a la página anterior en Ionic
   }
-  ngOnInit() {
-  }
+  
 
 }

@@ -38,22 +38,27 @@ export class PieRutaIngresoPage implements OnInit {
   contador:number=1;
   mostrarFiltros: boolean = true; 
   fechadevuelta: Date = new Date();
+  empresa_id: number = 0;
 
   constructor(private ingresoService: IngresoService) {}
 
   ngOnInit(): void {
+    const storedId = localStorage.getItem('empresa_id');
+    if (storedId) {
+      this.empresa_id = parseInt(storedId, 10);
+    }
     this.obtenerCiudades();
     this.obtenerFechaUltima();  }
   
     obtenerFechaUltima(): void {
-      this.ingresoService.obtenerFecha().subscribe(fecha => {
+      this.ingresoService.obtenerFecha(this.empresa_id).subscribe(fecha => {
           this.fechadevuelta = new Date(fecha);
           this.setPeriodo('semana');
       });
   }
 
   obtenerCiudades(): void {
-    this.ingresoService.obtenerRutas().subscribe(
+    this.ingresoService.obtenerRutas(this.empresa_id).subscribe(
       (data: Ruta[]) => {
         this.rutasDisponibles = data;
       },
@@ -74,11 +79,14 @@ export class PieRutaIngresoPage implements OnInit {
       this.mostrarFiltros = false;
     }
     this.contador=0;
-
+    const storedId = localStorage.getItem('empresa_id');
+    if (storedId) {
+      this.empresa_id = parseInt(storedId, 10);
+    }
     const fechaInicioFormatted = this.fecha_inicio.split('T')[0];
     const fechaFinFormatted = this.fecha_fin.split('T')[0];
 
-    this.ingresoService.obtenerIngresosPRuta(fechaInicioFormatted, fechaFinFormatted, this.servicio, this.rutas).subscribe(
+    this.ingresoService.obtenerIngresosPRuta(fechaInicioFormatted, fechaFinFormatted, this.servicio, this.rutas,this.empresa_id).subscribe(
       (data: IngresoRuta[]) => {
         console.log(data); 
         const data2 = data;

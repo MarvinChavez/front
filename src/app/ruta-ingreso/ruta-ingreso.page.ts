@@ -42,21 +42,27 @@ export class RutaIngresoPage implements OnInit {
     datosMostrados: any[] = []; 
     contador:number=1;
     mostrarFiltros: boolean = true; 
+    empresa_id: number = 0;
+
     constructor(private ingresoService: IngresoService) {}
     
     ngOnInit(): void {
+      const storedId = localStorage.getItem('empresa_id');
+      if (storedId) {
+        this.empresa_id = parseInt(storedId, 10);
+      }
       this.obtenerCiudades();
       this.obtenerFechaUltima();
     }
     obtenerFechaUltima(): void {
-      this.ingresoService.obtenerFecha().subscribe(fecha => {
+      this.ingresoService.obtenerFecha(this.empresa_id).subscribe(fecha => {
           this.fechadevuelta = new Date(fecha);
           this.setPeriodo('semana');
       });
   }
   
     obtenerCiudades(): void {
-      this.ingresoService.obtenerRutas().subscribe((data: Ruta[]) => {  // ⬅️ Cambiar `string[]` por `Ruta[]`
+      this.ingresoService.obtenerRutas(this.empresa_id).subscribe((data: Ruta[]) => {  // ⬅️ Cambiar `string[]` por `Ruta[]`
         this.rutasDisponibles = data;
       }, error => {
         console.error('Error al obtener rutas:', error);
@@ -87,7 +93,7 @@ export class RutaIngresoPage implements OnInit {
       const fechaInicioFormatted = this.fecha_inicio.split('T')[0];
       const fechaFinFormatted = this.fecha_fin.split('T')[0];
   
-      this.ingresoService.obtenerIngresosTRuta(fechaInicioFormatted, fechaFinFormatted, this.servicio, this.rutas).subscribe(data => {
+      this.ingresoService.obtenerIngresosTRuta(fechaInicioFormatted, fechaFinFormatted, this.servicio, this.rutas,this.empresa_id).subscribe(data => {
         this.rutasm = data.rutas;
         let todasLasFechas: string[] = [];
         this.montoTotal=data.total_general;
@@ -152,19 +158,29 @@ export class RutaIngresoPage implements OnInit {
                 }
               },
               tooltip: {
+                enabled: true,
                 callbacks: {
                   label: function (context) {
                     let label = 'Monto';
                     if (context.parsed.y !== null) {
-                      label += ': ' + new Intl.NumberFormat('es-PE', { style: 'currency', currency: 'PEN' }).format(context.parsed.y);
+                      label += ': ' + new Intl.NumberFormat('es-PE', {
+                        style: 'currency',
+                        currency: 'PEN'
+                      }).format(context.parsed.y);
                     }
-                    let pasajeros = (context.dataset as any).pasajerosData?.[context.dataIndex] ?? 0;
+                    const pasajeros = (context.dataset as any).pasajerosData?.[context.dataIndex] ?? 0;
                     return `${label} - Pasajeros: ${pasajeros}`;
                   },
                   title: function (context) {
-                    return new Date(context[0].parsed.x).toLocaleDateString('es-PE', { day: 'numeric', month: 'long' });
+                    return new Date(context[0].parsed.x).toLocaleDateString('es-PE', {
+                      day: 'numeric',
+                      month: 'long'
+                    });
                   }
                 }
+              },
+              datalabels: {
+                display: false // <-- Esto asegura que no se muestren labels sobre los puntos
               }
             },
             scales: {
@@ -196,6 +212,7 @@ export class RutaIngresoPage implements OnInit {
               }
             }
           }
+          
         });
         
       }, error => {
