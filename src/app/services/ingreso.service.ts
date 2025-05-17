@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators'; // 🔹 Importa 'map' correctamente
+import { environment } from 'src/environments/environment';
 
 interface Ruta {
   id: number;
@@ -20,7 +21,7 @@ interface Auto {
   providedIn: 'root',
 })
 export class IngresoService {
-  private apiUrl = 'http://127.0.0.1:8000/ingreso/';
+  private apiUrl = environment.apiUrl+'ingreso/';
 
   constructor(private http: HttpClient) {}
 

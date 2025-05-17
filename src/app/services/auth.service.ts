@@ -20,7 +20,7 @@ export interface User {
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = environment.apiUrl;
+  private apiUrl = environment.apiUrl+'auth';
   
   constructor(private http: HttpClient,private router: Router) {}
 
