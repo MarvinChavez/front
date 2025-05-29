@@ -1,41 +1,3 @@
-.botones-container {
-    padding: 0; /* Elimina espacio extra alrededor */
-  }
-  
-  .botones-row {
-    display: flex;
-    flex-wrap: wrap; /* Permite que los botones se acomoden en filas */
-    justify-content: left; /* Centra los botones */
-    margin: 0; /* Elimina márgenes */
-  }
-  
-  .no-margin {
-    padding: 0 !important; /* Elimina espacio entre columnas */
-    margin: 0 !important; /* Elimina márgenes extra */
-  }
-  
-  .custom-button {
-    --border-color: white !important; /* Bordes blancos */
-    --color: black !important; /* Texto negro */
-    --background: transparent !important; /* Fondo transparente */
-    --padding-start: 0;
-    --padding-end: 0;
-    font-size: 12px; /* Ajusta el tamaño del texto */
-    height: 20px; /* Ajusta la altura */
-    min-width: 60px; /* Tamaño mínimo */
-    margin: 0 !important; /* Elimina márgenes entre botones */
-    padding: 2px 4px !important; /* Reduce el espacio dentro del botón */
-  }
-  
-  /* Ajuste en pantallas pequeñas */
-  @media screen and (max-width: 768px) {
-    .custom-button {
-      font-size: 16px;
-      height: 26px;
-      min-width: 50px;
-      padding: 1px 3px !important; /* Reduce más el espacio en móviles */
-    }
-  }
   .chart-container {
     width: 90%;
     max-width: 900px;
@@ -56,19 +18,6 @@
       width: 100%;
       height: 250px; /* Altura mínima en móviles */
     }
-  }
-  .boton-container {
-    display: flex;
-    justify-content: center; /* Centra horizontalmente */
-    margin-top: 10px; /* Espacio opcional arriba */
-  }
-  
-  .ion-buttonf {
-    --padding-top: 6px;
-    --padding-bottom: 6px;
-    --padding-start: 12px;
-    --padding-end: 12px;
-    font-size: 14px;
   }
   
   

@@ -186,7 +186,7 @@ export class ComparacionIngresosPage implements OnInit {
         }
       },
       isStacked: true,
-      responsive: true,
+      responsive: false,
       chartArea: { left: 20, top: 40, width: '70%', height: '80%' },
       slices: {
         0: { color: '#3366CC' },
@@ -246,7 +246,7 @@ export class ComparacionIngresosPage implements OnInit {
         }
       },
       isStacked: true,
-      responsive: true,
+      responsive: false,
       chartArea: { left: 5, top: 20, width: '70%', height: '80%' },
       slices: {
         0: { color: '#3366CC' },

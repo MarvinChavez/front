@@ -108,7 +108,7 @@ export class OficinaIngresoPage implements OnInit {
           label: `${ciudad.ciudad_inicial} (Total: S/. ${ciudad.montoTotal.toLocaleString('es-PE')} - P=${ciudad.total_pasajeros})`,
           data: montos,
           borderColor: this.getRandomColor(index),
-          backgroundColor: this.getRandomColor(index, 0.2),
+          backgroundColor: this.getRandomColor(index),
           tension: 0.3,
           pointRadius: 2.5,
           pointHoverRadius: 6,
@@ -166,12 +166,6 @@ export class OficinaIngresoPage implements OnInit {
             x: {
               type: 'time',
               time: { unit: 'day' },
-              title: {
-                display: true,
-                text: 'Fecha',
-                color: '#333',
-                font: { size: 16 }
-              },
               grid: { display: false },
               ticks: {
                 autoSkip: true,
@@ -181,12 +175,6 @@ export class OficinaIngresoPage implements OnInit {
               }
             },
             y: {
-              title: {
-                display: true,
-                text: 'Importe (S/.)',
-                color: '#333',
-                font: { size: 16 }
-              },
               grid: { color: 'rgba(200, 200, 200, 0.1)' }
             }
           }

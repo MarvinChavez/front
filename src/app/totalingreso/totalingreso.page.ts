@@ -160,12 +160,6 @@ export class TotalingresoPage {
           x: {
             type: 'time',
             time: { unit: 'day' },
-            title: {
-              display: true,
-              text: 'Fecha',
-              color: '#333',
-              font: { size: 16 }
-            },
             grid: { display: false },
             ticks: {
               autoSkip: true,
@@ -175,12 +169,6 @@ export class TotalingresoPage {
             }
           },
           y: {
-            title: {
-              display: true,
-              text: 'Importe (S/.)',
-              color: '#333',
-              font: { size: 16 }
-            },
             grid: { color: 'rgba(200, 200, 200, 0.1)' }
           }
         }

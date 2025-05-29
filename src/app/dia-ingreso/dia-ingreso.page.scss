@@ -1,40 +1,112 @@
 .botones-container {
-    padding: 0; /* Elimina espacio extra alrededor */
+    .botones-container {
+  margin: 10px 0 0 0; 
+}
+
   }
   
   .botones-row {
     display: flex;
-    flex-wrap: wrap; /* Permite que los botones se acomoden en filas */
-    justify-content: left; /* Centra los botones */
-    margin: 0; /* Elimina márgenes */
-  }
+    flex-wrap: wrap; 
+    justify-content: left; 
+margin-bottom: 0 !important;
+  padding-bottom: 0 !important;  }
   
   .no-margin {
-    padding: 0 !important; /* Elimina espacio entre columnas */
-    margin: 0 !important; /* Elimina márgenes extra */
+    padding: 1px !important; 
+    margin: 1px !important; 
   }
   
   .custom-button {
-    --border-color: white !important; /* Bordes blancos */
-    --color: black !important; /* Texto negro */
-    --background: transparent !important; /* Fondo transparente */
+    --border-color: #0054e9 !important; 
+    --color: white !important;
+    --background: #0054e9 !important;
     --padding-start: 0;
     --padding-end: 0;
-    font-size: 12px; /* Ajusta el tamaño del texto */
-    height: 20px; /* Ajusta la altura */
-    min-width: 60px; /* Tamaño mínimo */
-    margin: 0 !important; /* Elimina márgenes entre botones */
-    padding: 2px 4px !important; /* Reduce el espacio dentro del botón */
+    font-size: 12px; 
+    height: 10px; 
+    width: 60px; 
+    margin: 0 !important; 
+    padding: 0px 0px !important; 
   }
-  
-  /* Ajuste en pantallas pequeñas */
+  .custom-button2 {
+    --border-color: #189d0d !important;
+    --color: white !important; 
+    --background: #189d0d !important; 
+    --padding-start: 0;
+    --padding-end: 0;
+    font-size: 12px;
+    height: 14px;
+    width: 60px;
+    margin: 0 !important; 
+    padding: 1px 1px !important; 
+  }
   @media screen and (max-width: 768px) {
-    .custom-button {
-      font-size: 16px;
-      height: 26px;
-      min-width: 50px;
-      padding: 1px 3px !important; /* Reduce más el espacio en móviles */
+    .custom-button2 {
+      font-size: 14px;
+  line-height: 1;
+  height: auto;
+  min-height: 22px;           
+  width: 65px;
+  --padding-top: 0px !important;   
+  --padding-bottom: 0px !important;
+  --padding-start: 0px !important;
+  --padding-end: 0px !important;
+  padding: 0 !important;
+
+  margin: 2px !important;
+  border-radius: 0px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
     }
   }
+  @media screen and (max-width: 768px) {
+   .custom-button {
+  --border-color: #0054e9 !important;
+  --color: white !important;
+  --background: #0054e9 !important;
+  font-size: 12px;
+  line-height: 1;
+  height: auto;
+  min-height: 22px;           
+  width: 60px;
+  --padding-top: 0px !important;   
+  --padding-bottom: 0px !important;
+  --padding-start: 0px !important;
+  --padding-end: 0px !important;
+  padding: 0 !important;
+
+  margin: 2px !important;
+  border-radius: 0px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+  }
+  .contenido-centrado {
+  text-align: center;
+}
+ion-card-header.contenido-centrado {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+ion-card-title,
+ion-card-header p {
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: 1.1;
+}
+
+
+.contenido-centrado p {
+  margin: 2px 0;  /* reduce el espacio vertical entre párrafos */
+  font-size: 14px; /* opcional: para uniformar */
+}
 
   

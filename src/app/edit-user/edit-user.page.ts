@@ -44,6 +44,7 @@ export class EditUserPage implements OnInit {
         console.error('Error al cargar usuario', error);
       }
     );
+
   }
 
   updateUser() {
@@ -51,6 +52,7 @@ export class EditUserPage implements OnInit {
       const updatedUser = this.userForm.value;
       this.authService.updateUser(this.username, updatedUser).subscribe(
         () => {
+          localStorage.setItem('permisos', JSON.stringify(this.permisos_vistas)); // Guardar permisos
           window.location.reload();
           this.router.navigate(['/user-list']); 
         },
