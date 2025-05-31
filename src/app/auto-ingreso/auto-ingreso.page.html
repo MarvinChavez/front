@@ -1,62 +1,62 @@
 <ion-content>
-  <ion-card>
+  <ion-card class="margin">
     <ion-grid class="botones-container">
   <ion-row class="botones-row">
-    <ion-col class="boton-col" size="3" size-md="4" size-lg="6">
+    <ion-col class="boton-col" size="3">
       <ion-button class="custom-button"  routerLink="/dia-ingreso">
         I.Día
       </ion-button>
     </ion-col>
 
-    <ion-col class="boton-col" size="3" size-md="4" size-lg="6">
+    <ion-col class="boton-col" size="3">
       <ion-button class="custom-button"  routerLink="/totalingreso">
         I.Total
       </ion-button>
     </ion-col>
 
-    <ion-col class="boton-col" size="3" size-md="4" size-lg="6">
+    <ion-col class="boton-col" size="3">
       <ion-button class="custom-button"  routerLink="/oficina-ingreso">
        I.Oficin
       </ion-button>
     </ion-col>
 
-    <ion-col class="boton-col" size="3" size-md="4" size-lg="6">
+    <ion-col class="boton-col" size="3">
       <ion-button class="custom-button"  routerLink="/ruta-ingreso">
         I.Ruta
       </ion-button>
     </ion-col>
 
-    <ion-col class="boton-col" size="3" size-md="4" size-lg="6">
+    <ion-col class="boton-col" size="3">
       <ion-button class="custom-button"  routerLink="/pie-ruta-ingreso">
         RUTAPIE
       </ion-button>
     </ion-col>
 
-    <ion-col class="boton-col" size="3" size-md="4" size-lg="6">
+    <ion-col class="boton-col" size="3">
       <ion-button class="custom-button"  routerLink="/turno-ingreso">
         I.Turno
       </ion-button>
     </ion-col>
 
-    <ion-col class="boton-col" size="3" size-md="4" size-lg="6">
+    <ion-col class="boton-col" size="3">
       <ion-button class="custom-button"  routerLink="/auto-ingreso">
         I.Placa
       </ion-button>
     </ion-col>
 
-    <ion-col class="boton-col" size="3" size-md="4" size-lg="6">
+    <ion-col class="boton-col" size="3">
       <ion-button class="custom-button"  routerLink="/pie-placa-ingreso">
         PL.PIE
       </ion-button>
     </ion-col>
 
-    <ion-col class="boton-col" size="3" size-md="4" size-lg="6">
+    <ion-col class="boton-col" size="3">
       <ion-button class="custom-button"  routerLink="/pie-ruta-placa-ingreso">
         PL.RUTA
       </ion-button>
     </ion-col>
 
-    <ion-col class="boton-col" size="3" size-md="4" size-lg="6">
+    <ion-col class="boton-col" size="3">
       <ion-button class="custom-button"  routerLink="/comparacion-ingresos">
         COMPT.
       </ion-button>
@@ -132,19 +132,22 @@
       <canvas id="graficoAuto" style="width: 100%; height: 400px;"></canvas>
     </ion-card-content>
   </ion-card>
-  <div class="botones-container">
-    <ion-button class="ion-button2" expand="block" (click)="mostrarMontosPromedio()">Promedio</ion-button>
-    <ion-button class="ion-button2" expand="block" color="secondary" (click)="mostrarMontos()">Montos Finales</ion-button>
-  </div>
+  <div class="botonesd-container">
+  <ion-button  (click)="mostrarMontosPromedio()">Promedio</ion-button>
+  <ion-button  color="secondary" (click)="mostrarMontos()">Montos Finales</ion-button>
+</div>
 
-  <div class="cards-container">
-    <ion-card *ngFor="let item of datosMostrados; let i = index" [style.backgroundColor]="getRandomColor(i)" class="ion-card2">
-      <ion-card-content>
-        <h2>{{ item.titulo }}</h2>
-        <p *ngIf="item.monto_promedio" [ngStyle]="{ color: 'black' }">S/. {{ item.monto_promedio }}</p>
-        <p *ngIf="item.fecha" [ngStyle]="{ color: 'black' }">{{ item.fecha }}</p>
-        <p *ngIf="item.monto" [ngStyle]="{ color: 'black' }">S/. {{ item.monto }}</p>        
-      </ion-card-content>
-    </ion-card>
-  </div>
+<div class="cards-container">
+  <ion-card *ngFor="let item of datosMostrados; let i = index" 
+            [style.backgroundColor]="getRandomColor(i)" 
+            class="ion-card2">
+    <ion-card-content>
+      <h2>{{ item.titulo }}</h2>
+      <p *ngIf="item.monto_promedio" style="color: black">S/. {{ item.monto_promedio }}</p>
+      <p *ngIf="item.fecha" style="color: black">{{ item.fecha }}</p>
+      <p *ngIf="item.monto" style="color: black">S/. {{ item.monto }}</p>
+    </ion-card-content>
+  </ion-card>
+</div>
+
 </ion-content>

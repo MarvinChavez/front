@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService, User } from '../services/auth.service';
 import { Router } from '@angular/router';
+import { ScreenOrientation, OrientationLockType } from '@capacitor/screen-orientation';
 
 @Component({
   selector: 'app-user-list',
@@ -20,6 +21,7 @@ export class UserListPage implements OnInit {
     if (storedId) {
       this.empresa_id = parseInt(storedId, 10);
     }
+    this.lockOrientation();
     this.loadUsers();
   }
 
@@ -54,5 +56,13 @@ export class UserListPage implements OnInit {
   goCreate() {
     this.router.navigate(['/user-create']); 
   }
+  async lockOrientation() {
+  try {
+    await ScreenOrientation.lock({ orientation: 'portrait' });
+    console.log('Orientación bloqueada en vertical');
+  } catch (error) {
+    console.error('Error bloqueando orientación:', error);
+  }
+}
 
 }

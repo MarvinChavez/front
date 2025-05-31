@@ -169,6 +169,26 @@ height: auto;
   --color: white !important;
   --background: #00e9dd !important;
   }
+  .botonesd-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px;
+  padding: 5px;
+}
+  .cards-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 4 columnas de igual tamaño */
+  gap: 2px;
+  padding: 5px;
+}
+
+.ion-card2 {
+  width: 100%;
+}
+.margin{
+  margin-top: 40px;
+}
+
 
   
   

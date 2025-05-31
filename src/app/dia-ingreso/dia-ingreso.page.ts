@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { IngresoService } from '../services/ingreso.service';
 import { Chart } from 'chart.js/auto';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-
+import { ScreenOrientation, OrientationLockType } from '@capacitor/screen-orientation';
 @Component({
   selector: 'app-dia-ingreso',
   standalone:false,
@@ -28,6 +28,7 @@ export class DiaIngresoPage implements OnInit {
     if (storedId) {
       this.empresa_id = parseInt(storedId, 10);
     }
+    this.lockOrientation();
     this.obtenerFechaUltima(); 
   }
   obtenerFechaUltima(): void {
@@ -164,5 +165,13 @@ export class DiaIngresoPage implements OnInit {
         }
       }
     });
+  }
+  async lockOrientation() {
+    try {
+    await ScreenOrientation.lock({ orientation: 'landscape' });
+      console.log('Orientación bloqueada en horizontal');
+    } catch (error) {
+      console.error('Error bloqueando orientación:', error);
+    }
   }
 }

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UploadService } from '../services/upload.service'; // ✅ Importar el servicio
+import { ScreenOrientation, OrientationLockType } from '@capacitor/screen-orientation';
 
 @Component({
   selector: 'app-upload',
@@ -18,6 +19,7 @@ export class UploadPage implements OnInit{
     if (storedId) {
       this.empresa_id = parseInt(storedId, 10);
     }
+    this.lockOrientation();
   }
   onFileSelected(event: any) {
     const fileInput = event.target as HTMLInputElement;
@@ -51,4 +53,14 @@ export class UploadPage implements OnInit{
       },
     });
   }
+  async lockOrientation() {
+  try {
+    await ScreenOrientation.lock({ orientation: 'portrait' });
+    console.log('Orientación bloqueada en vertical');
+  } catch (error) {
+    console.error('Error bloqueando orientación:', error);
+  }
 }
+
+}
+

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService, User } from '../services/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ScreenOrientation, OrientationLockType } from '@capacitor/screen-orientation';
+
 @Component({
   selector: 'app-edit-user',
   templateUrl: './edit-user.page.html',
@@ -28,6 +30,7 @@ export class EditUserPage implements OnInit {
   }
 
   ngOnInit() {
+    this.lockOrientation();
     this.username = this.route.snapshot.paramMap.get('username')!;
     this.loadUser();
   }
@@ -62,5 +65,14 @@ export class EditUserPage implements OnInit {
       );
     }
   }
+  async lockOrientation() {
+  try {
+    await ScreenOrientation.lock({ orientation: 'portrait' });
+    console.log('Orientación bloqueada en vertical');
+  } catch (error) {
+    console.error('Error bloqueando orientación:', error);
+  }
+}
+
 
 }

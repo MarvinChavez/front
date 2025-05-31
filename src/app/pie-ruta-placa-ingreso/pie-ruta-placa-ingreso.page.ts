@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { IngresoService } from '../services/ingreso.service';
 import { ChartType } from 'angular-google-charts';
 import { ChangeDetectorRef } from '@angular/core';
+import { ScreenOrientation, OrientationLockType } from '@capacitor/screen-orientation';
 
 interface Auto {
   id: number;
@@ -61,6 +62,7 @@ export class PieRutaPlacaIngresoPage implements OnInit {
     if (storedId) {
       this.empresa_id = parseInt(storedId, 10);
     }
+    this.lockOrientation();
     this.obtenerCiudades();
     this.obtenerFechaUltima();
     this.setChartSize();
@@ -185,5 +187,14 @@ export class PieRutaPlacaIngresoPage implements OnInit {
       };
     }
   }
+  async lockOrientation() {
+    try {
+    await ScreenOrientation.lock({ orientation: 'landscape' });
+      console.log('Orientación bloqueada en horizontal');
+    } catch (error) {
+      console.error('Error bloqueando orientación:', error);
+    }
+  }
+  
   
 }

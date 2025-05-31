@@ -1,6 +1,7 @@
 import { Component,OnInit } from '@angular/core';
 import { IngresoService } from '../services/ingreso.service';
 import { Chart } from 'chart.js/auto';
+import { ScreenOrientation, OrientationLockType } from '@capacitor/screen-orientation';
 
 @Component({
   selector: 'app-totalingreso',
@@ -30,6 +31,7 @@ export class TotalingresoPage {
       if (storedId) {
         this.empresa_id = parseInt(storedId, 10);
       }
+    this.lockOrientation();
     this.obtenerFechaUltima();
   }
   obtenerFechaUltima(): void {
@@ -175,5 +177,13 @@ export class TotalingresoPage {
       }
       
     });
+  }
+  async lockOrientation() {
+    try {
+    await ScreenOrientation.lock({ orientation: 'landscape' });
+      console.log('Orientación bloqueada en horizontal');
+    } catch (error) {
+      console.error('Error bloqueando orientación:', error);
+    }
   }
 }

@@ -3,6 +3,7 @@ import { IngresoService } from '../services/ingreso.service';
 import { Chart } from 'chart.js/auto';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import 'chartjs-adapter-date-fns';
+import { ScreenOrientation, OrientationLockType } from '@capacitor/screen-orientation';
 
 interface Ruta {
   id: number;
@@ -47,6 +48,7 @@ export class PieRutaIngresoPage implements OnInit {
     if (storedId) {
       this.empresa_id = parseInt(storedId, 10);
     }
+    this.lockOrientation();
     this.obtenerCiudades();
     this.obtenerFechaUltima();  }
   
@@ -203,4 +205,13 @@ export class PieRutaIngresoPage implements OnInit {
       this.chart.destroy();
     }
   }
+  async lockOrientation() {
+    try {
+    await ScreenOrientation.lock({ orientation: 'landscape' });
+      console.log('Orientación bloqueada en horizontal');
+    } catch (error) {
+      console.error('Error bloqueando orientación:', error);
+    }
+  }
+  
 }

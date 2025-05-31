@@ -6,6 +6,7 @@ import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router'; // Agrega esto
 import { MenuController } from '@ionic/angular';
+import { ScreenOrientation, OrientationLockType } from '@capacitor/screen-orientation';
 @Component({
   selector: 'app-loginempresa',
   templateUrl: './loginempresa.page.html',
@@ -20,7 +21,9 @@ export class LoginempresaPage{
     password: string = '';
     passwordType: string = 'password';
     errorMessage: string = "";
-  
+  ngOnInit() {
+    this.lockOrientation();
+  }
     constructor(private authService: AuthService, private router: Router,private menuCtrl: MenuController) {
       document.body.classList.add('logine-page');
     }
@@ -52,4 +55,12 @@ export class LoginempresaPage{
     ionViewWillLeave() {
       this.menuCtrl.enable(true); // Reactiva el menú al salir de login
     }
+    async lockOrientation() {
+  try {
+    await ScreenOrientation.lock({ orientation: 'portrait' });
+    console.log('Orientación bloqueada en vertical');
+  } catch (error) {
+    console.error('Error bloqueando orientación:', error);
+  }
+}
 }

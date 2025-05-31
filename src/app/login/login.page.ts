@@ -6,6 +6,7 @@ import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router'; // Agrega esto
 import { MenuController } from '@ionic/angular';
+import { ScreenOrientation, OrientationLockType } from '@capacitor/screen-orientation';
 
 @Component({
   selector: 'app-login',
@@ -24,6 +25,7 @@ export class LoginPage implements OnInit{
     if (storedId) {
       this.empresa_id = parseInt(storedId, 10);
     }
+    this.lockOrientation();
   }
   constructor(private authService: AuthService, private router: Router,private menuCtrl: MenuController) {
     document.body.classList.add('login-page');
@@ -66,4 +68,12 @@ export class LoginPage implements OnInit{
   isAuthenticated(): boolean {
     return !!localStorage.getItem('access_token'); // Verificar si hay sesión activa
   }
+  async lockOrientation() {
+  try {
+    await ScreenOrientation.lock({ orientation: 'portrait' });
+    console.log('Orientación bloqueada en vertical');
+  } catch (error) {
+    console.error('Error bloqueando orientación:', error);
+  }
+}
 }

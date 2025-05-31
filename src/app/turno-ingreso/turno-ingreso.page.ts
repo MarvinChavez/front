@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { IngresoService } from '../services/ingreso.service';
 import { Chart } from 'chart.js/auto';
 import 'chartjs-adapter-date-fns';
+import { ScreenOrientation, OrientationLockType } from '@capacitor/screen-orientation';
+
 interface Ciudad {
   nombre: string;
   fechas: string[];
@@ -57,6 +59,7 @@ export class TurnoIngresoPage implements OnInit {
       if (storedId) {
         this.empresa_id = parseInt(storedId, 10);
       }
+        this.lockOrientation();
         this.obtenerCiudades();
         this.obtenerRutas();
         this.obtenerFechaUltima();
@@ -268,4 +271,12 @@ export class TurnoIngresoPage implements OnInit {
         this.fecha_inicio = inicio.toISOString().split('T')[0]; 
         this.obtenerYCrearGrafico();
       }
+     async lockOrientation() {
+    try {
+    await ScreenOrientation.lock({ orientation: 'landscape' });
+      console.log('Orientación bloqueada en horizontal');
+    } catch (error) {
+      console.error('Error bloqueando orientación:', error);
+    }
+  }
 }

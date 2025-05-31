@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { NavController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { ScreenOrientation, OrientationLockType } from '@capacitor/screen-orientation';
 
 @Component({
   selector: 'app-user-create',
@@ -21,6 +22,8 @@ export class UserCreatePage implements OnInit {
     if (storedId) {
       this.empresa_id = parseInt(storedId, 10);
     }
+    this.lockOrientation();
+
   }
   register() {
     if (!this.username || !this.password || this.permisos_vistas.length === 0) {
@@ -45,6 +48,14 @@ export class UserCreatePage implements OnInit {
 
     this.navCtrl.back(); // Regresa a la página anterior en Ionic
   }
+  async lockOrientation() {
+  try {
+    await ScreenOrientation.lock({ orientation: 'portrait' });
+    console.log('Orientación bloqueada en vertical');
+  } catch (error) {
+    console.error('Error bloqueando orientación:', error);
+  }
+}
   
 
 }
