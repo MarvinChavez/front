@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ElementRef, AfterViewInit } from '@angular/core';
 import { IngresoService } from '../services/ingreso.service';
 import { ChartData, ChartOptions } from 'chart.js';
-import { Chart } from 'chart.js/auto';
 import { ChartType } from 'angular-google-charts';
-import { HttpClient } from '@angular/common/http';
+import { ScreenOrientation, OrientationLockType } from '@capacitor/screen-orientation';
+
 interface Auto {
   id: number;
   placa: string;
@@ -27,6 +27,8 @@ export class ComparacionIngresosPage implements OnInit {
     if (storedId) {
       this.empresa_id = parseInt(storedId, 10);
     }
+      this.lockOrientation();
+
   }
   chartType: ChartType = ChartType.PieChart;
   chartDataGoogle: any[] = [];
@@ -254,6 +256,14 @@ export class ComparacionIngresosPage implements OnInit {
       }
     } as any;
     
+  }
+  async lockOrientation() {
+    try {
+    await ScreenOrientation.lock({ orientation: 'landscape' });
+      console.log('Orientación bloqueada en horizontal');
+    } catch (error) {
+      console.error('Error bloqueando orientación:', error);
+    }
   }
 
 }
