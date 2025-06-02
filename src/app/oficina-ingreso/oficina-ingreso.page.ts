@@ -3,6 +3,7 @@ import { IngresoService } from '../services/ingreso.service';
 import { Chart } from 'chart.js/auto';
 import 'chartjs-adapter-date-fns';
 import { ScreenOrientation, OrientationLockType } from '@capacitor/screen-orientation';
+import zoomPlugin from 'chartjs-plugin-zoom';
 
 interface Ciudad {
   ciudad_inicial: string;
@@ -119,70 +120,90 @@ export class OficinaIngresoPage implements OnInit {
           pasajerosData: pasajerosData as any
         };
       });
+      Chart.register(zoomPlugin);
 
       this.chart = new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: todasLasFechas,
-          datasets: datasets
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              display: true,
-              position: 'top',
-              labels: {
-                color: '#333',
-                font: { size: 14 }
-              }
-            },
-            tooltip: {
-              enabled: true,
-              callbacks: {
-                label: function (context) {
-                  let label = 'Monto';
-                  if (context.parsed.y !== null) {
-                    label += ': ' + new Intl.NumberFormat('es-PE', {
-                      style: 'currency',
-                      currency: 'PEN'
-                    }).format(context.parsed.y);
-                  }
-                  const pasajeros = (context.dataset as any).pasajerosData?.[context.dataIndex] ?? 0;
-                  return `${label} - Pasajeros: ${pasajeros}`;
-                },
-                title: function (context) {
-                  return new Date(context[0].parsed.x).toLocaleDateString('es-PE', {
-                    day: 'numeric',
-                    month: 'long'
-                  });
-                }
-              }
-            },
-            datalabels: {
-              display: false // <-- Esto asegura que no se muestren labels sobre los puntos
+  type: 'line',
+  data: {
+    labels: todasLasFechas,
+    datasets: datasets
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        display: true,
+        position: 'top',
+        labels: {
+          color: '#333',
+          font: { size: 14 }
+        }
+      },
+      tooltip: {
+        enabled: true,
+        callbacks: {
+          label: function (context) {
+            let label = 'Monto';
+            if (context.parsed.y !== null) {
+              label += ': ' + new Intl.NumberFormat('es-PE', {
+                style: 'currency',
+                currency: 'PEN'
+              }).format(context.parsed.y);
             }
+            const pasajeros = (context.dataset as any).pasajerosData?.[context.dataIndex] ?? 0;
+            return `${label} - Pasajeros: ${pasajeros}`;
           },
-          scales: {
-            x: {
-              type: 'time',
-              time: { unit: 'day' },
-              grid: { display: false },
-              ticks: {
-                autoSkip: true,
-                maxTicksLimit: 7,
-                maxRotation: 0,
-                minRotation: 0
-              }
-            },
-            y: {
-              grid: { color: 'rgba(200, 200, 200, 0.1)' }
-            }
+          title: function (context) {
+            return new Date(context[0].parsed.x).toLocaleDateString('es-PE', {
+              day: 'numeric',
+              month: 'long'
+            });
           }
         }
-        
-      });
+      },
+      datalabels: {
+        display: false
+      },
+      zoom: {
+        pan: {
+          enabled: true,
+          mode: 'x', // Puedes usar 'xy' para ambos ejes o 'y' solo vertical
+          modifierKey: 'ctrl' // Opcional: requiere presionar Ctrl para hacer pan
+        },
+        zoom: {
+          wheel: {
+            enabled: true
+          },
+          pinch: {
+            enabled: true
+          },
+          mode: 'x', // Zoom horizontal (en fechas)
+          drag: {
+            enabled: true
+          }
+        }
+      }
+    },
+    scales: {
+      x: {
+        type: 'time',
+        time: { unit: 'day' },
+        grid: { display: false },
+        ticks: {
+          autoSkip: true,
+          maxTicksLimit: 7,
+          maxRotation: 0,
+          minRotation: 0
+        }
+      },
+      y: {
+        grid: { color: 'rgba(200, 200, 200, 0.1)' }
+      }
+    }
+  }
+});
+
       if(this.contador==1){
         this.mostrarFiltros = true;
       }else{

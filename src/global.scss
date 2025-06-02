@@ -188,6 +188,19 @@ height: auto;
 .margin{
   margin-top: 40px;
 }
+.button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ion-button2 {
+  min-height: 35px;           
+  width: 95px;
+  margin: 5px !important;
+  font-size: 14px;
+}
+
 
 
   

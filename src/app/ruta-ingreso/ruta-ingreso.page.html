@@ -2,61 +2,61 @@
   <ion-card class="margin">
     <ion-grid class="botones-container">
   <ion-row class="botones-row">
-    <ion-col class="boton-col" size="3">
+    <ion-col class="boton-col" size="1">
       <ion-button class="custom-button"  routerLink="/dia-ingreso">
         I.Día
       </ion-button>
     </ion-col>
 
-    <ion-col class="boton-col" size="3">
+    <ion-col class="boton-col" size="1">
       <ion-button class="custom-button"  routerLink="/totalingreso">
         I.Total
       </ion-button>
     </ion-col>
 
-    <ion-col class="boton-col" size="3">
+    <ion-col class="boton-col" size="1">
       <ion-button class="custom-button"  routerLink="/oficina-ingreso">
        I.Oficin
       </ion-button>
     </ion-col>
 
-    <ion-col class="boton-col" size="3">
+    <ion-col class="boton-col" size="1">
       <ion-button class="custom-button"  routerLink="/ruta-ingreso">
         I.Ruta
       </ion-button>
     </ion-col>
 
-    <ion-col class="boton-col" size="3">
+    <ion-col class="boton-col" size="1">
       <ion-button class="custom-button"  routerLink="/pie-ruta-ingreso">
         RUTAPIE
       </ion-button>
     </ion-col>
 
-    <ion-col class="boton-col" size="3">
+    <ion-col class="boton-col" size="1">
       <ion-button class="custom-button"  routerLink="/turno-ingreso">
         I.Turno
       </ion-button>
     </ion-col>
 
-    <ion-col class="boton-col" size="3">
+    <ion-col class="boton-col" size="1">
       <ion-button class="custom-button"  routerLink="/auto-ingreso">
         I.Placa
       </ion-button>
     </ion-col>
 
-    <ion-col class="boton-col" size="3">
+    <ion-col class="boton-col" size="1">
       <ion-button class="custom-button"  routerLink="/pie-placa-ingreso">
         PL.PIE
       </ion-button>
     </ion-col>
 
-    <ion-col class="boton-col" size="3">
+    <ion-col class="boton-col" size="1">
       <ion-button class="custom-button"  routerLink="/pie-ruta-placa-ingreso">
         PL.RUTA
       </ion-button>
     </ion-col>
 
-    <ion-col class="boton-col" size="3">
+    <ion-col class="boton-col" size="1"> 
       <ion-button class="custom-button"  routerLink="/comparacion-ingresos">
         COMPT.
       </ion-button>
@@ -97,8 +97,10 @@
         <ion-select-option value="SPP">SPP</ion-select-option>
       </ion-select> 
         </ion-item>
-        <ion-button class="ion-button2" expand="full" type="submit" color="primary">Filtrar</ion-button>
-      </form>
+<div class="button-container">
+  <ion-button class="ion-button2" type="submit" color="primary">Filtrar</ion-button>
+</div>          
+</form>
   </ion-card>
   <div class="boton-container" *ngIf="!mostrarFiltros">
     <ion-button size="small" color="danger" (click)="limpiarFiltros()" class="ion-buttonf">Limpiar</ion-button>

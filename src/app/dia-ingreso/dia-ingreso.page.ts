@@ -3,6 +3,8 @@ import { IngresoService } from '../services/ingreso.service';
 import { Chart } from 'chart.js/auto';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { ScreenOrientation, OrientationLockType } from '@capacitor/screen-orientation';
+import zoomPlugin from 'chartjs-plugin-zoom';
+
 @Component({
   selector: 'app-dia-ingreso',
   standalone:false,
@@ -106,6 +108,7 @@ export class DiaIngresoPage implements OnInit {
       this.chart.destroy();
     }
     Chart.register(ChartDataLabels);
+Chart.register(zoomPlugin);
 
     this.chart = new Chart(ctx, {
       type: 'bar',
@@ -149,8 +152,24 @@ export class DiaIngresoPage implements OnInit {
               size: 12
             },
             color: '#333'
-          }
+          },
+    zoom: {
+      pan: {
+        enabled: true,
+        mode: 'xy', // puedes usar 'xy' para ambos ejes
+        threshold: 10
+      },
+      zoom: {
+        wheel: {
+          enabled: true
         },
+        pinch: {
+          enabled: true
+        },
+        mode: 'y'
+      }
+    }
+  },
         scales: {
           x: {
             beginAtZero: true,

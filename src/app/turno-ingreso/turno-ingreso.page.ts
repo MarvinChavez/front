@@ -51,6 +51,7 @@ export class TurnoIngresoPage implements OnInit {
       contador:number=1;
       mostrarFiltros: boolean = true; 
       empresa_id: number = 0;
+        textoRutaSeleccionada: string = '';
 
       constructor(private ingresoService: IngresoService) {}
       
@@ -132,9 +133,10 @@ export class TurnoIngresoPage implements OnInit {
               const indexFecha = ciudad.fechas.indexOf(fecha);
               return indexFecha >= 0 ? ciudad.pasajeros[indexFecha] : 0;
             });
+            this.actualizarTextoRuta();
     
             return {
-              label: `${ciudad.nombre} (Total: S/. ${ciudad.total.toLocaleString('es-PE')} - P=${ciudad.total_pasajeros})`,
+              label: `${this.textoRutaSeleccionada} ${ ciudad.nombre} (Total: S/. ${ciudad.total.toLocaleString('es-PE')} - P=${ciudad.total_pasajeros})`,
               data: montos,
               borderColor: this.getRandomColor(index),
               backgroundColor: this.getRandomColor(index),
@@ -271,6 +273,12 @@ export class TurnoIngresoPage implements OnInit {
         this.fecha_inicio = inicio.toISOString().split('T')[0]; 
         this.obtenerYCrearGrafico();
       }
+      actualizarTextoRuta() {
+    const ruta = this.rutasDisponibles.find(r => r.id === this.idRuta);
+    if (ruta) {
+      this.textoRutaSeleccionada = `${ruta.ciudad_inicial} - ${ruta.ciudad_final}`;
+    }
+  }
      async lockOrientation() {
     try {
     await ScreenOrientation.lock({ orientation: 'landscape' });
