@@ -166,7 +166,7 @@ Chart.register(zoomPlugin);
         pinch: {
           enabled: true
         },
-        mode: 'y'
+        mode: 'xy'
       }
     }
   },

@@ -2,6 +2,7 @@ import { Component,OnInit } from '@angular/core';
 import { IngresoService } from '../services/ingreso.service';
 import { Chart } from 'chart.js/auto';
 import { ScreenOrientation, OrientationLockType } from '@capacitor/screen-orientation';
+import zoomPlugin from 'chartjs-plugin-zoom';
 
 @Component({
   selector: 'app-totalingreso',
@@ -104,6 +105,7 @@ export class TotalingresoPage {
   if (this.chart) {
     this.chart.destroy();
   }
+    Chart.register(zoomPlugin);
 
     this.chart = new Chart(ctx, {
       type: 'line',
@@ -155,8 +157,26 @@ export class TotalingresoPage {
             }
           },
           datalabels: {
-            display: false // <-- Esto asegura que no se muestren labels sobre los puntos
-          }
+            display: false 
+          },
+              zoom: {
+                pan: {
+                  enabled: true,
+                  mode: 'x',
+                },
+                zoom: {
+                  wheel: {
+                    enabled: true
+                  },
+                  pinch: {
+                    enabled: true
+                  },
+                  mode: 'x',
+                  drag: {
+                    enabled: true
+                  }
+                }
+              }
         },
         scales: {
           x: {

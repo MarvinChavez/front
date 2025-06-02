@@ -4,6 +4,7 @@ import { Chart } from 'chart.js/auto';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import 'chartjs-adapter-date-fns';
 import { ScreenOrientation, OrientationLockType } from '@capacitor/screen-orientation';
+import zoomPlugin from 'chartjs-plugin-zoom';
 
 interface Auto {
   id: number;
@@ -109,6 +110,7 @@ export class PiePlacaIngresoPage implements OnInit {
         if (this.chart) {
           this.chart.destroy();
         }
+      Chart.register(zoomPlugin);
 
         this.chart = new Chart(ctx, {
           type: 'pie',
@@ -160,6 +162,21 @@ export class PiePlacaIngresoPage implements OnInit {
                   weight: 'bold',
                 },
               },
+            zoom: {
+              pan: {
+                enabled: true,
+                mode: 'r' as any, // 👈 evita error TS
+              },
+              zoom: {
+                wheel: {
+                  enabled: true
+                },
+                pinch: {
+                  enabled: true
+                },
+                mode: 'r' as any // 👈 evita error TS
+              }
+            }
             },
           },
           plugins: [ChartDataLabels],

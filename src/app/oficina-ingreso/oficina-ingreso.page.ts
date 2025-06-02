@@ -168,8 +168,7 @@ export class OficinaIngresoPage implements OnInit {
       zoom: {
         pan: {
           enabled: true,
-          mode: 'x', // Puedes usar 'xy' para ambos ejes o 'y' solo vertical
-          modifierKey: 'ctrl' // Opcional: requiere presionar Ctrl para hacer pan
+          mode: 'x',
         },
         zoom: {
           wheel: {
@@ -178,7 +177,7 @@ export class OficinaIngresoPage implements OnInit {
           pinch: {
             enabled: true
           },
-          mode: 'x', // Zoom horizontal (en fechas)
+          mode: 'x',
           drag: {
             enabled: true
           }

@@ -3,6 +3,8 @@ import { IngresoService } from '../services/ingreso.service';
 import { Chart } from 'chart.js/auto';
 import 'chartjs-adapter-date-fns';
 import { ScreenOrientation, OrientationLockType } from '@capacitor/screen-orientation';
+import zoomPlugin from 'chartjs-plugin-zoom';
+
 interface Ciudad {
   nombre: string;
   fechas: string[];
@@ -130,7 +132,8 @@ export class AutoIngresoPage implements OnInit {
               pasajerosData: pasajerosData as any
             };
           });
-    
+          Chart.register(zoomPlugin);
+
           this.chart = new Chart(ctx, {
             type: 'line',
             data: {
@@ -173,6 +176,24 @@ export class AutoIngresoPage implements OnInit {
                 },
                 datalabels: {
                   display: false // <-- Esto asegura que no se muestren labels sobre los puntos
+                },
+                zoom: {
+                  pan: {
+                    enabled: true,
+                    mode: 'x',
+                  },
+                  zoom: {
+                    wheel: {
+                      enabled: true
+                    },
+                    pinch: {
+                      enabled: true
+                    },
+                    mode: 'x',
+                    drag: {
+                      enabled: true
+                    }
+                  }
                 }
               },
               scales: {
