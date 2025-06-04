@@ -1,5 +1,5 @@
 <ion-content>
-  <ion-card class="margin">
+  <ion-card class="margin" *ngIf="mostrarFiltros">
    <ion-grid class="botones-container">
   <ion-row class="botones-row">
     <ion-col class="boton-col" size="1">
@@ -74,13 +74,13 @@
 </ion-item>
 <ion-grid>
   <ion-row>
-    <ion-col size="12" size-lg="6">
+    <ion-col size="6">
       <ion-item>
         <ion-label>F.Inicio:</ion-label>
         <ion-input type="date" [(ngModel)]="fecha_inicio" name="fecha_inicio"></ion-input>
       </ion-item>
     </ion-col>
-    <ion-col size="12" size-lg="6">
+    <ion-col size="6">
       <ion-item>
         <ion-label>F.Fin:</ion-label>
         <ion-input type="date" [(ngModel)]="fecha_fin" name="fecha_fin"></ion-input>

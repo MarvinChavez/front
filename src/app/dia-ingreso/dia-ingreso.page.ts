@@ -156,7 +156,7 @@ Chart.register(zoomPlugin);
     zoom: {
       pan: {
         enabled: true,
-        mode: 'xy', // puedes usar 'xy' para ambos ejes
+        mode: 'y', // puedes usar 'xy' para ambos ejes
         threshold: 10
       },
       zoom: {
@@ -166,7 +166,7 @@ Chart.register(zoomPlugin);
         pinch: {
           enabled: true
         },
-        mode: 'xy'
+        mode: 'y'
       }
     }
   },

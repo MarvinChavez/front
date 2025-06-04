@@ -159,24 +159,18 @@ export class TotalingresoPage {
           datalabels: {
             display: false 
           },
-              zoom: {
-                pan: {
-                  enabled: true,
-                  mode: 'x',
-                },
-                zoom: {
-                  wheel: {
-                    enabled: true
-                  },
-                  pinch: {
-                    enabled: true
-                  },
-                  mode: 'x',
-                  drag: {
-                    enabled: true
-                  }
-                }
-              }
+             zoom: {
+            pan: {
+              enabled: true,
+              mode: 'y',
+            },
+            zoom: {
+              wheel: { enabled: true },
+              pinch: { enabled: true },
+              drag: { enabled: true },
+              mode: 'y',
+            }
+          }
         },
         scales: {
           x: {
