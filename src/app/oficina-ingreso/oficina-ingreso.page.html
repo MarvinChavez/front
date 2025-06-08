@@ -130,8 +130,10 @@
     <p>{{ fecha_inicio | date: 'dd/MM/yyyy' }} - {{ fecha_fin | date: 'dd/MM/yyyy' }}</p>
   </ion-card-header>
 
-  <ion-card-content class="canvas-container">
-    <canvas id="graficoIngreso"></canvas>
+  <ion-card-content class="canvas-wrapper">
+     <div class="canvas-padding">
+      <canvas id="graficoIngreso"></canvas>
+    </div>
   </ion-card-content>
 </ion-card>
 
