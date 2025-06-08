@@ -141,18 +141,33 @@ Chart.register(zoomPlugin);
             display: false
           },
           datalabels: {
-            anchor: 'end',
-            align: 'right',
-            formatter: (value, context) => {
-              let pasajero = pasajeros[context.dataIndex];
-              return `S/ ${value.toLocaleString('es-PE')} - P=${pasajero}`;
-            },
-            font: {
-              weight: 'bold',
-              size: 12
-            },
-            color: '#333'
+          anchor: 'end',
+          align: 'right',
+          formatter: (value, context) => {
+            let pasajero = pasajeros[context.dataIndex];
+            return `S/ ${value.toLocaleString('es-PE')} - P=${pasajero}`;
           },
+          font: context => {
+            const chart = context.chart;
+            const xScale = chart.scales['x']; // ✅ corregido
+            const zoomLevel = xScale.max - xScale.min;
+
+            let size;
+            if (zoomLevel < 10000) {
+              size = 24;
+            } else if (zoomLevel < 30000) {
+              size = 16;
+            } else {
+              size = 12;
+            }
+
+            return {
+              weight: 'bold',
+              size: size
+            };
+          },
+          color: '#333'
+        },
     zoom: {
       pan: {
         enabled: true,
