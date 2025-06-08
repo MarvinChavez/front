@@ -103,36 +103,38 @@
   <div class="boton-container" *ngIf="!mostrarFiltros">
     <ion-button size="small" color="danger" (click)="limpiarFiltros()" class="ion-buttonf">Limpiar</ion-button>
   </div>
-  <ion-card>
-    <ion-grid>
-      <ion-row class="botones-row">
-        <ion-col size="auto">
-          <ion-button class="custom-button2" fill="outline" (click)="setPeriodo('semana')">
-            <small>Semana</small>
-          </ion-button>
-        </ion-col>
-        <ion-col size="auto">
-          <ion-button class="custom-button2" fill="outline" (click)="setPeriodo('mes')">
-            <small>Mes</small>
-          </ion-button>
-        </ion-col>
-        <ion-col size="auto">
-          <ion-button class="custom-button2" fill="outline" (click)="setPeriodo('anio')">
-            <small>Año</small>
-          </ion-button>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-    <ion-card-header class="contenido-centrado">
-  <ion-card-title class="ion-text-center">INGRESOS POR OFICINA</ion-card-title>
-  <p>Importe Total: S/ {{ montoTotal }} - Pasajeros: {{ totalPasajeros | number:'1.0-0' }}</p>
-  <p>{{ fecha_inicio | date: 'dd/MM/yyyy' }} - {{ fecha_fin | date: 'dd/MM/yyyy' }}</p>
-</ion-card-header>
+  <ion-card class="scrollable-card">
+  <ion-grid>
+    <ion-row class="botones-row">
+      <ion-col size="auto">
+        <ion-button class="custom-button2" fill="outline" (click)="setPeriodo('semana')">
+          <small>Semana</small>
+        </ion-button>
+      </ion-col>
+      <ion-col size="auto">
+        <ion-button class="custom-button2" fill="outline" (click)="setPeriodo('mes')">
+          <small>Mes</small>
+        </ion-button>
+      </ion-col>
+      <ion-col size="auto">
+        <ion-button class="custom-button2" fill="outline" (click)="setPeriodo('anio')">
+          <small>Año</small>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
-    <ion-card-content>
-      <canvas id="graficoIngreso" style="width: 60%; height: 300px;"></canvas>
-    </ion-card-content>
-  </ion-card>
+  <ion-card-header class="contenido-centrado">
+    <ion-card-title class="ion-text-center">INGRESOS POR OFICINA</ion-card-title>
+    <p>Importe Total: S/ {{ montoTotal }} - Pasajeros: {{ totalPasajeros | number:'1.0-0' }}</p>
+    <p>{{ fecha_inicio | date: 'dd/MM/yyyy' }} - {{ fecha_fin | date: 'dd/MM/yyyy' }}</p>
+  </ion-card-header>
+
+  <ion-card-content class="canvas-container">
+    <canvas id="graficoIngreso"></canvas>
+  </ion-card-content>
+</ion-card>
+
   <div class="botonesd-container">
   <ion-button  (click)="mostrarMontosPromedio()">Promedio</ion-button>
   <ion-button  color="secondary" (click)="mostrarMontos()">Montos Finales</ion-button>
