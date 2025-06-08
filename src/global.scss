@@ -187,11 +187,9 @@ height: auto;
 }
 .mostrar {
   width: 80%;
-  padding: 20px; /* espacio amplio arriba/abajo y a los lados */
 }
 .ion-card2 {
   width: 80%;
-  padding: 20px;
 }
 .margin{
   margin-top: 40px;
@@ -226,6 +224,36 @@ height: auto;
 }
 
 canvas#graficoIngreso {
+  width: 100% !important;
+  height: 300px !important;
+  touch-action: pan-y;
+}
+canvas#graficoAuto {
+  width: 100% !important;
+  height: 300px !important;
+  touch-action: pan-y;
+}
+canvas#graficoRuta {
+  width: 100% !important;
+  height: 300px !important;
+  touch-action: pan-y;
+}
+canvas#graficoTurno {
+  width: 100% !important;
+  height: 300px !important;
+  touch-action: pan-y;
+}
+canvas#graficoCanvas {
+  width: 100% !important;
+  height: 300px !important;
+  touch-action: pan-y;
+}
+canvas#graficoPieAuto {
+  width: 100% !important;
+  height: 300px !important;
+  touch-action: pan-y;
+}
+canvas#graficoPieRuta {
   width: 100% !important;
   height: 300px !important;
   touch-action: pan-y;

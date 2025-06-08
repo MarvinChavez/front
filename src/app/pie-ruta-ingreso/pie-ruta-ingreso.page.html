@@ -130,8 +130,10 @@
   <p>Importe Total: S/ {{ montoTotal }} - Pasajeros: {{ totalPasajeros | number:'1.0-0' }}</p>
   <p>{{ fecha_inicio | date: 'dd/MM/yyyy' }} - {{ fecha_fin | date: 'dd/MM/yyyy' }}</p>
 </ion-card-header>
-    <ion-card-content>
-      <canvas id="graficoPieRuta" style="width: 100%; height: 300px;"></canvas>
+    <ion-card-content class="canvas-wrapper">
+      <div class="canvas-padding">
+      <canvas id="graficoPieRuta"></canvas>
+    </div>
     </ion-card-content>
   </ion-card>
 </ion-content>
