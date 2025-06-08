@@ -108,7 +108,7 @@ export class OficinaIngresoPage implements OnInit {
         });
 
         return {
-          label: `${ciudad.ciudad_inicial} (Total: S/. ${ciudad.montoTotal.toLocaleString('es-PE')} - P=${ciudad.total_pasajeros})`,
+          label: `${ciudad.ciudad_inicial} (S/. ${ciudad.montoTotal.toLocaleString('es-PE')}- P=${ciudad.total_pasajeros})`,
           data: montos,
           borderColor: this.getRandomColor(index),
           backgroundColor: this.getRandomColor(index),
@@ -137,7 +137,7 @@ export class OficinaIngresoPage implements OnInit {
         position: 'top',
         labels: {
           color: '#333',
-          font: { size: 14 }
+          font: { size: 10 }
         }
       },
       tooltip: {

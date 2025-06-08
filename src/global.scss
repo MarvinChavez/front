@@ -76,8 +76,8 @@ margin-bottom: 0 !important;
     --padding-start: 0;
     --padding-end: 0;
     font-size: 12px;
-    height: 12px;
-    width: 60px;
+    height: 10px;
+    width: 40px;
     margin: 0 !important; 
     --padding-top: 0px !important;   
   --padding-bottom: 0px !important;
@@ -186,10 +186,12 @@ height: auto;
   padding: 5px;
 }
 .mostrar {
-  width: 60%;
+  width: 80%;
+  padding: 20px; /* espacio amplio arriba/abajo y a los lados */
 }
 .ion-card2 {
-  width: 60%;
+  width: 80%;
+  padding: 20px;
 }
 .margin{
   margin-top: 40px;
