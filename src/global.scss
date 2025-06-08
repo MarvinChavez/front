@@ -76,17 +76,21 @@ margin-bottom: 0 !important;
     --padding-start: 0;
     --padding-end: 0;
     font-size: 12px;
-    height: 14px;
+    height: 12px;
     width: 60px;
     margin: 0 !important; 
-    padding: 1px 1px !important; 
+    --padding-top: 0px !important;   
+  --padding-bottom: 0px !important;
+  --padding-start: 0px !important;
+  --padding-end: 0px !important;
+  padding: 0 !important;
   }
   @media screen and (max-width: 768px) {
     .custom-button2 {
       font-size: 14px;
   line-height: 1;
   height: auto;
-  min-height: 22px;           
+  min-height: 16px;           
   width: 65px;
   --padding-top: 0px !important;   
   --padding-bottom: 0px !important;
@@ -181,9 +185,11 @@ height: auto;
   gap: 2px;
   padding: 5px;
 }
-
+.mostrar {
+  width: 60%;
+}
 .ion-card2 {
-  width: 100%;
+  width: 60%;
 }
 .margin{
   margin-top: 40px;
@@ -203,7 +209,7 @@ height: auto;
 .scrollable-card {
   max-width: 95%;
   margin: auto;
-  border-radius: 24px;
+  border-radius: 10px;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
   border: 2px solid #ccc;
 }
@@ -214,7 +220,7 @@ height: auto;
 }
 
 .canvas-padding {
-  padding: 40px 60px; /* espacio amplio arriba/abajo y a los lados */
+  padding: 2px 60px; /* espacio amplio arriba/abajo y a los lados */
 }
 
 canvas#graficoIngreso {
