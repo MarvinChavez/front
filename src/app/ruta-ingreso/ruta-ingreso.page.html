@@ -105,7 +105,7 @@
   <div class="boton-container" *ngIf="!mostrarFiltros">
     <ion-button size="small" color="danger" (click)="limpiarFiltros()" class="ion-buttonf">Limpiar</ion-button>
   </div>
-  <ion-card>
+  <ion-card class="canvas-wrapper">
     <ion-grid>
       <ion-row class="botones-row">
         <ion-col size="auto">
@@ -130,13 +130,20 @@
   <p>Importe Total: S/ {{ montoTotal }} - Pasajeros: {{ totalPasajeros | number:'1.0-0' }}</p>
   <p>{{ fecha_inicio | date: 'dd/MM/yyyy' }} - {{ fecha_fin | date: 'dd/MM/yyyy' }}</p>
 </ion-card-header>
-    <ion-card-content class="canvas-wrapper">
-       <div class="canvas-padding">
+<ion-card-content>
+    <div class="canvas-padding-container">
+    <div class="scroll-edge scroll-left">
+      <div class="scroll-fill"></div>
+    </div>
+    <div class="canvas-padding">
       <canvas id="graficoRuta"></canvas>
     </div>
-    </ion-card-content>
-  </ion-card>
-  <div class="botonesd-container">
+    <div class="scroll-edge scroll-right">
+      <div class="scroll-fill"></div>
+    </div>
+  </div> 
+  </ion-card-content>
+    <div class="botonesd-container">
   <ion-button  (click)="mostrarMontosPromedio()">Promedio</ion-button>
   <ion-button  color="secondary" (click)="mostrarMontos()">Montos Finales</ion-button>
 </div>
@@ -153,4 +160,5 @@
     </ion-card-content>
   </ion-card>
 </div>
+  </ion-card>
 </ion-content>

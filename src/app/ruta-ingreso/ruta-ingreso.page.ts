@@ -112,8 +112,15 @@ export class RutaIngresoPage implements OnInit {
   
         const ctx = canvas.getContext('2d');
         if (!ctx) return;
-  
-        // Destruir el gráfico si ya existe
+let fechasOrdenadas = [...todasLasFechas].sort();
+let fechaMin = new Date(fechasOrdenadas[0]);
+let fechaMax = new Date(fechasOrdenadas[fechasOrdenadas.length - 1]);
+
+fechaMax.setDate(fechaMax.getDate() + 1);
+
+let todosLosMontos = data.rutas.flatMap((ciudad: Ciudad) => ciudad.montos);
+let montoMin = Math.min(...todosLosMontos.filter((m: number) => !isNaN(m)));
+let montoMax = Math.max(...todosLosMontos.filter((m: number) => !isNaN(m)));
         if (this.chart) {
           this.chart.destroy();
           this.chart = null;  // Limpiar la referencia
@@ -203,12 +210,24 @@ export class RutaIngresoPage implements OnInit {
                   drag: {
                     enabled: true
                   }
+                },
+                limits: {
+                  x: {
+                    min: fechaMin.getTime(),
+                    max: fechaMax.getTime()
+                  },
+                  y: {
+                    min: montoMin - 10,
+                    max: montoMax + 10
+                  }
                 }
               }
             },
             scales: {
               x: {
                 type: 'time',
+                 min: fechaMin.getTime(), // ✅ convierte a number
+                max: fechaMax.getTime(),
                 time: { unit: 'day' },
                 grid: { display: false },
                 ticks: {
@@ -219,6 +238,8 @@ export class RutaIngresoPage implements OnInit {
                 }
               },
               y: {
+                min: montoMin - 1000,
+                max: montoMax + 1000,
                 grid: { color: 'rgba(200, 200, 200, 0.1)' }
               }
             }

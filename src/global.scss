@@ -166,12 +166,12 @@ ion-card-header p {
   padding: 0 !important;
 height: auto;
   min-height: 22px;           
-  width: 65px;
+  width: 70px;
   margin: 5px !important;
     font-size: 14px;
-     --border-color: #00e9dd !important;
+     --border-color: #189d0d !important;
   --color: white !important;
-  --background: #00e9dd !important;
+  --background: #189d0d !important;
   }
   .botonesd-container {
   display: grid;
@@ -213,16 +213,70 @@ height: auto;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
   border: 2px solid #ccc;
 }
-
 .canvas-wrapper {
+  max-height: 500px; /* Ajusta según tu necesidad */
   overflow-y: auto;
-  touch-action: pan-y; /* permite scroll vertical sin interferencia de zoom */
+  padding-right: 4px; /* espacio para scrollbar */
+}
+
+.canvas-wrapper::-webkit-scrollbar {
+  width: 6px;
+}
+
+.canvas-wrapper::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.canvas-wrapper::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+
+.canvas-padding-container {
+  display: flex;
+  align-items: flex-start;
+  height: 100%;
 }
 
 .canvas-padding {
-  padding: 2px 60px; /* espacio amplio arriba/abajo y a los lados */
+  flex: 1;
+  padding: 2px 0;
+  overflow: hidden;
+}
+.scroll-edge {
+  width: 20px;
+  overflow-y: auto;
+  touch-action: pan-y;
+  height: 100%;
+  position: relative;
+  background-color: transparent;
+}
+.scroll-fill {
+  height: 310px; /* más grande que .canvas-wrapper para que se muestre la barra */
 }
 
+.scroll-edge::-webkit-scrollbar {
+  width: 4px;
+}
+
+.scroll-edge::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.scroll-edge::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 2px;
+}
+
+.scroll-edge::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+canvas#graficoCanvas {
+  width: 100% !important;
+  height: 300px !important;
+  touch-action: pan-y;
+}
 canvas#graficoIngreso {
   width: 100% !important;
   height: 300px !important;
@@ -243,11 +297,7 @@ canvas#graficoTurno {
   height: 300px !important;
   touch-action: pan-y;
 }
-canvas#graficoCanvas {
-  width: 100% !important;
-  height: 300px !important;
-  touch-action: pan-y;
-}
+
 canvas#graficoPieAuto {
   width: 100% !important;
   height: 300px !important;
@@ -257,6 +307,31 @@ canvas#graficoPieRuta {
   width: 100% !important;
   height: 300px !important;
   touch-action: pan-y;
+}
+canvas#canvasComparacion {
+  width: 100% !important;
+  height: 100px !important;
+  touch-action: pan-y;
+}
+.canvas-wrapper2 {
+  max-height: 500px; /* Ajusta según tu necesidad */
+  max-width: 800px; /* Ajusta según tu necesidad */
+
+  overflow-y: auto;
+  padding-right: 4px; /* espacio para scrollbar */
+}
+
+.canvas-wrapper2::-webkit-scrollbar {
+  width: 6px;
+}
+
+.canvas-wrapper2::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.canvas-wrapper2::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 
 

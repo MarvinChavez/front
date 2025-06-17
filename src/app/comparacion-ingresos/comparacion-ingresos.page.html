@@ -97,13 +97,13 @@
 </ion-item>
 <ion-grid>
   <ion-row>
-    <ion-col size="12" size-lg="6">
+    <ion-col size="6">
       <ion-item>
         <ion-label>F.Inicio1:</ion-label>
         <ion-input type="date" [(ngModel)]="fechaInicio1" name="fechaInicio1"></ion-input>
       </ion-item>
     </ion-col>
-    <ion-col size="12" size-lg="6">
+    <ion-col size="6" >
       <ion-item>
         <ion-label>F.Fin1:</ion-label>
         <ion-input type="date" [(ngModel)]="fechaFin1" name="fechaFin1"></ion-input>
@@ -111,13 +111,13 @@
     </ion-col>
   </ion-row>
   <ion-row>
-    <ion-col size="12" size-lg="6">
+    <ion-col size="6" >
       <ion-item>
         <ion-label>F.Inicio2:</ion-label>
         <ion-input type="date" [(ngModel)]="fechaInicio2" name="fechaInicio2"></ion-input>
       </ion-item>
     </ion-col>
-    <ion-col size="12" size-lg="6">
+    <ion-col size="6" >
       <ion-item>
         <ion-label>F.Fin2:</ion-label>
         <ion-input type="date" [(ngModel)]="fechaFin2" name="fechaFin2"></ion-input>
@@ -135,27 +135,32 @@
   <div class="boton-container" *ngIf="!mostrarFiltros">
     <ion-button size="small" color="danger" (click)="limpiarFiltros()" class="ion-buttonf">Limpiar</ion-button>
   </div>
-<ion-card>
-  <ion-card-content>
-    <p *ngIf="fechaInicio1">Rango 1</p>
-    <p *ngIf="fechaInicio1">{{ fechaInicio1 | date: 'dd/MM/yyyy' }} - {{ fechaFin1 | date: 'dd/MM/yyyy' }}</p>
-    <p *ngIf="montoTotal1">Importe Total: S/ {{ montoTotal1| number:'1.0-0' }} - Pasajeros: {{ totalPasajeros1 | number:'1.0-0' }}</p>
-    <p *ngIf="fechaInicio2">Rango 2</p>
-    <p *ngIf="fechaInicio2">{{ fechaInicio2 | date: 'dd/MM/yyyy' }} - {{ fechaFin2 | date: 'dd/MM/yyyy' }}</p>
-    <p *ngIf="montoTotal2">Importe Total: S/ {{ montoTotal2| number:'1.0-0' }} - Pasajeros: {{ totalPasajeros2 | number:'1.0-0' }}</p>
-  </ion-card-content>
-</ion-card>
-<ion-card *ngIf="mostrarGraficoGoogle">
-  <ion-card-content  >
-    <div class="grafico-responsive">
-      <google-chart
-        [type]="chartType"
-        [data]="chartDataGoogle"
-        [columns]="chartColumns"
-        [options]="chartOptionsGoogle">
-      </google-chart>
+<ion-card-content class="canvas-wrapper2" *ngIf="mostrarGrafico"
+  style="display: flex; flex-direction: column; align-items: center; text-align: center;">
+  
+  <h4 style="margin-bottom: 15px;font-size: 18px;color: darkgreen;">Comparación de ingresos</h4>
+
+  <div style="display: flex; flex-direction: row; justify-content: center; align-items: flex-start; gap: 30px;">
+    
+    <!-- LEYENDA -->
+    <div>
+      <div *ngFor="let item of leyendaPersonalizada"
+        style="margin-bottom: 10px; display: flex; align-items: center; gap: 8px; text-align: left;">
+        <div [style.background]="item.color" style="width: 12px; height: 12px;"></div>
+        <div>
+          <strong>{{ item.rango }}</strong><br>
+          {{ item.monto }} - {{ item.pasajeros }}
+        </div>
+      </div>
     </div>
-  </ion-card-content>
-</ion-card>
+
+    <!-- GRÁFICO CON TAMAÑO FIJO -->
+    <div style="width: 400px; height: 400px;">
+      <canvas #canvasComparacion></canvas>
+    </div>
+
+  </div>
+</ion-card-content>
+
 
 </ion-content>

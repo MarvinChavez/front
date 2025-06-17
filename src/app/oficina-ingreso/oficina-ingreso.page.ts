@@ -83,19 +83,27 @@ export class OficinaIngresoPage implements OnInit {
       data.ciudades.forEach((ciudad: Ciudad) => {
         todasLasFechas = [...todasLasFechas, ...ciudad.fechas];
       });
-      todasLasFechas = [...new Set(todasLasFechas)].sort();
+
 
       const canvas = document.getElementById('graficoIngreso') as HTMLCanvasElement;
       if (!canvas) return;
 
       const ctx = canvas.getContext('2d');
       if (!ctx) return;
-
-      // Destruir el gráfico si ya existe
       if (this.chart) {
         this.chart.destroy();
-        this.chart = null;  // Limpiar la referencia
+        this.chart = null; 
       }
+      todasLasFechas = [...new Set(todasLasFechas)].sort();
+let fechasOrdenadas = [...todasLasFechas].sort();
+let fechaMin = new Date(fechasOrdenadas[0]);
+let fechaMax = new Date(fechasOrdenadas[fechasOrdenadas.length - 1]);
+
+fechaMax.setDate(fechaMax.getDate() + 1);
+
+let todosLosMontos = data.ciudades.flatMap((ciudad: Ciudad) => ciudad.montos);
+let montoMin = Math.min(...todosLosMontos.filter((m: number) => !isNaN(m)));
+let montoMax = Math.max(...todosLosMontos.filter((m: number) => !isNaN(m)));
       const datasets = data.ciudades.map((ciudad: Ciudad, index: number) => {
         const montos = todasLasFechas.map(fecha => {
           const indexFecha = ciudad.fechas.indexOf(fecha);
@@ -106,7 +114,7 @@ export class OficinaIngresoPage implements OnInit {
           const indexFecha = ciudad.fechas.indexOf(fecha);
           return indexFecha >= 0 ? ciudad.pasajeros[indexFecha] : 0;
         });
-
+      
         return {
           label: `${ciudad.ciudad_inicial} (S/. ${ciudad.montoTotal.toLocaleString('es-PE')}- P=${ciudad.total_pasajeros})`,
           data: montos,
@@ -137,7 +145,7 @@ export class OficinaIngresoPage implements OnInit {
         position: 'top',
         labels: {
           color: '#333',
-          font: { size: 10 }
+          font: { size: 14 }
         }
       },
       tooltip: {
@@ -181,28 +189,41 @@ export class OficinaIngresoPage implements OnInit {
           drag: {
             enabled: true
           }
-        }
+        },
+        limits: {
+    x: {
+      min: fechaMin.getTime(),
+      max: fechaMax.getTime()
+    },
+    y: {
+      min: montoMin - 10,
+      max: montoMax + 10
+    }
+  }
       }
     },
     scales: {
       x: {
         type: 'time',
         time: { unit: 'day' },
+         min: fechaMin.getTime(), // ✅ convierte a number
+        max: fechaMax.getTime(),
         grid: { display: false },
         ticks: {
           autoSkip: true,
-          maxTicksLimit: 7,
+          maxTicksLimit: 10,
           maxRotation: 0,
           minRotation: 0
         }
       },
       y: {
+        min: montoMin - 1000,
+          max: montoMax + 1000,
         grid: { color: 'rgba(200, 200, 200, 0.1)' }
       }
     }
   }
 });
-
       if(this.contador==1){
         this.mostrarFiltros = true;
       }else{
@@ -260,12 +281,15 @@ export class OficinaIngresoPage implements OnInit {
     switch (tipo) {
       case 'semana':
         inicio.setDate(hoy.getDate() - 7);
+        this.datosMostrados = [];
         break;
       case 'mes':
         inicio.setMonth(hoy.getMonth() - 1);
+        this.datosMostrados = []; 
         break;
       case 'anio':
         inicio.setFullYear(hoy.getFullYear() - 1);
+        this.datosMostrados = [];
         break;
     }
     this.fecha_fin=this.fechadevuelta.toISOString().split('T')[0]

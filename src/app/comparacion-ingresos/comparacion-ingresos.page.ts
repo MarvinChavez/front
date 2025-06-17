@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { ElementRef, AfterViewInit } from '@angular/core';
 import { IngresoService } from '../services/ingreso.service';
-import { ChartData, ChartOptions } from 'chart.js';
-import { ChartType } from 'angular-google-charts';
 import { ScreenOrientation, OrientationLockType } from '@capacitor/screen-orientation';
+import { Chart } from 'chart.js/auto';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
 
 interface Auto {
   id: number;
@@ -30,31 +29,9 @@ export class ComparacionIngresosPage implements OnInit {
       this.lockOrientation();
 
   }
-  chartType: ChartType = ChartType.PieChart;
-  chartDataGoogle: any[] = [];
-  chartColumns: string[] = ['Rango', 'Monto'];
-  chartOptionsGoogle = {
-    title: 'Comparación de ingresos',
-    is3D: true,
-    legend: {
-      position: 'left',
-      textStyle: {
-        fontSize: 10, // tamaño de la fuente
-        fontName: 'Arial', // tipo de fuente
-        color: '#333', // color de la fuente
-      }
-    },
-    isStacked: true,
-    responsive: true,
-    chartArea: { left: 20, top: 40, width: '70%', height: '80%' },
-    slices: {
-      0: { color: '#3366CC' },
-      1: { color: '#DC3912' }
-    }
-  } as any;
-  
-  
-  mostrarGraficoGoogle: boolean = false;
+  @ViewChild('canvasComparacion') canvasRef!: ElementRef;
+
+  mostrarGrafico: boolean = false;
     chart: any;
   mostrarRutas: boolean = false;
   mostrarOficinas: boolean = false;
@@ -74,11 +51,15 @@ export class ComparacionIngresosPage implements OnInit {
   totalPasajeros1: number = 0;
   montoTotal2: number = 0;
   totalPasajeros2: number = 0;
-  chartData: ChartData<'line'> | null = null;
-  chartLabels: string[] = [];
   mostrarFiltros: boolean = true;
   contador: number = 1;
   empresa_id: number = 0;
+leyendaPersonalizada: {
+  rango: string;
+  monto: string;
+  pasajeros: string;
+  color: string;
+}[] = [];
 
   constructor(private ingresoService: IngresoService) { }
   obtenerRutas(): void {
@@ -169,38 +150,92 @@ export class ComparacionIngresosPage implements OnInit {
         });
     }
   }
+crearGraficoLineas(data: any) {
+  Chart.register(ChartDataLabels);
 
-  crearGraficoLineas(data: any) {
-    const pasajeros1 = data.rango_1.total_pasajeros;
-    const monto1 = data.rango_1.monto_total;
+  this.mostrarGrafico = true;
 
-    const pasajeros2 = data.rango_2.total_pasajeros;
-    const monto2 = data.rango_2.monto_total;
-    this.chartOptionsGoogle = {
-      title: 'Comparación de ingresos',
-      is3D: true,
-      legend: {
-        position: 'left',
-        textStyle: {
-          fontSize: 10, // tamaño de la fuente
-          fontName: 'Arial', // tipo de fuente
-          color: '#333', // color de la fuente
+  setTimeout(() => {
+    const canvas = this.canvasRef?.nativeElement as HTMLCanvasElement;
+    const ctx = canvas.getContext('2d');
+
+    if (this.chart) {
+      this.chart.destroy();
+    }
+
+    const formatoFecha = (fecha: string | Date): string => {
+      const f = new Date(fecha);
+      f.setDate(f.getDate() + 1); // Sumar un día
+      return f.toLocaleDateString('es-PE', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+      });
+    };
+
+    const etiquetas = [
+      `Rango 1: ${formatoFecha(this.fechaInicio1)} - ${formatoFecha(this.fechaFin1)}`,
+      `Rango 2: ${formatoFecha(this.fechaInicio2)} - ${formatoFecha(this.fechaFin2)}`
+    ];
+
+    const datos = [data.rango_1.monto_total, data.rango_2.monto_total];
+    const pasajeros = [data.rango_1.total_pasajeros, data.rango_2.total_pasajeros];
+    const colores = ['#4CAF50', '#FF9800'];
+    const total = datos.reduce((sum, val) => sum + val, 0);
+this.leyendaPersonalizada = etiquetas.map((label, i) => ({
+  rango: label,
+  monto: `S/. ${datos[i].toLocaleString('en-US')}`,
+  pasajeros: `P: ${pasajeros[i].toLocaleString('en-US')}`,
+  color: colores[i]
+}));
+
+    this.chart = new Chart(ctx!, {
+      type: 'pie',
+      data: {
+        labels: etiquetas,
+        datasets: [{
+          data: datos,
+          backgroundColor: colores,
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          title: {
+            display: false,
+          },
+          legend: {
+            display: false
+          },
+          tooltip: {
+            callbacks: {
+              label: (context) => {
+                const index = context.dataIndex;
+                const value = context.raw as number;
+                return `S/. ${value.toLocaleString('en-US')} - Pasajeros: ${pasajeros[index].toLocaleString('en-US')}`;
+              }
+            }
+          },
+          datalabels: {
+            color: '#fff',
+            font: {
+              weight: 'bold'
+            },
+            formatter: (value, context) => {
+              const porcentaje = ((value as number) / total) * 100;
+              return `${porcentaje.toFixed(1)}%`;
+            }
+          }
         }
       },
-      isStacked: true,
-      responsive: true,
-      chartArea: { left: 20, top: 40, width: '70%', height: '80%' },
-      slices: {
-        0: { color: '#3366CC' },
-        1: { color: '#DC3912' }
-      }
-    } as any;
-    this.chartDataGoogle = [
-      [`Rango 1: ${pasajeros1} pasajeros, S/. ${monto1}`, monto1],
-      [`Rango 2: ${pasajeros2} pasajeros, S/. ${monto2}`, monto2]
-    ];
-    this.mostrarGraficoGoogle = true;
-  }
+      plugins: [ChartDataLabels]
+    });
+  }, 100);
+}
+
+
   
   seleccionTotales(): void {
     this.ingresoTotales = true;
@@ -235,27 +270,7 @@ export class ComparacionIngresosPage implements OnInit {
     this.montoTotal2 = 0;
     this.totalPasajeros1 = 0;
     this.totalPasajeros2 = 0;
-    this.mostrarGraficoGoogle = false;
-    this.chartOptionsGoogle = {
-      title: 'Comparación de ingresos',
-      is3D: true,
-      legend: {
-        position: 'left',
-        textStyle: {
-          fontSize: 10, // tamaño de la fuente
-          fontName: 'Arial', // tipo de fuente
-          color: '#333', // color de la fuente
-        }
-      },
-      isStacked: true,
-      responsive: true,
-      chartArea: { left: 5, top: 20, width: '70%', height: '80%' },
-      slices: {
-        0: { color: '#3366CC' },
-        1: { color: '#DC3912' }
-      }
-    } as any;
-    
+    this.mostrarGrafico = false;
   }
   async lockOrientation() {
     try {
