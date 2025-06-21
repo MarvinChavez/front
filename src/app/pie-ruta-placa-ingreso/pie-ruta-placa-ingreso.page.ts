@@ -163,7 +163,7 @@ leyendaPersonalizada: { label:string, color: string, turnos: string, monto: stri
               formatter: (value, context) => {
                 const index = context.dataIndex;
                 const porcentaje = porcentajes ? Math.round(porcentajes[index]) : 0;
-                return `S/. ${value.toLocaleString('en-US')}\n(${porcentaje}%)`;
+                return `(${porcentaje}%)`;
               },
               color: '#fff',
               font: {
