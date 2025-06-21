@@ -112,15 +112,15 @@ export class RutaIngresoPage implements OnInit {
   
         const ctx = canvas.getContext('2d');
         if (!ctx) return;
-let fechasOrdenadas = [...todasLasFechas].sort();
-let fechaMin = new Date(fechasOrdenadas[0]);
-let fechaMax = new Date(fechasOrdenadas[fechasOrdenadas.length - 1]);
+        let fechasOrdenadas = [...todasLasFechas].sort();
+        let fechaMin = new Date(fechasOrdenadas[0]);
+        let fechaMax = new Date(fechasOrdenadas[fechasOrdenadas.length - 1]);
 
-fechaMax.setDate(fechaMax.getDate() + 1);
+        fechaMax.setDate(fechaMax.getDate() + 1);
 
-let todosLosMontos = data.rutas.flatMap((ciudad: Ciudad) => ciudad.montos);
-let montoMin = Math.min(...todosLosMontos.filter((m: number) => !isNaN(m)));
-let montoMax = Math.max(...todosLosMontos.filter((m: number) => !isNaN(m)));
+        let todosLosMontos = data.rutas.flatMap((ciudad: Ciudad) => ciudad.montos);
+        let montoMin = Math.min(...todosLosMontos.filter((m: number) => !isNaN(m)));
+        let montoMax = Math.max(...todosLosMontos.filter((m: number) => !isNaN(m)));
         if (this.chart) {
           this.chart.destroy();
           this.chart = null;  // Limpiar la referencia
@@ -142,8 +142,9 @@ let montoMax = Math.max(...todosLosMontos.filter((m: number) => !isNaN(m)));
             borderColor: this.getRandomColor(index),
             backgroundColor: this.getRandomColor(index),
             tension: 0.3,
-            pointRadius: 2.5,
-            pointHoverRadius: 6,
+             pointRadius: 3,
+            pointHoverRadius: 8,
+            pointHitRadius: 15,
             fill: false,
             spanGaps: true,
             pasajerosData: pasajerosData as any
@@ -160,6 +161,10 @@ let montoMax = Math.max(...todosLosMontos.filter((m: number) => !isNaN(m)));
           options: {
             responsive: true,
             maintainAspectRatio: false,
+            interaction: {
+                mode: 'nearest',
+                intersect: false
+              },
             plugins: {
               legend: {
                 display: true,
@@ -217,8 +222,8 @@ let montoMax = Math.max(...todosLosMontos.filter((m: number) => !isNaN(m)));
                     max: fechaMax.getTime()
                   },
                   y: {
-                    min: montoMin - 10,
-                    max: montoMax + 10
+                    min: montoMin - 1000,
+                    max: montoMax + 1000
                   }
                 }
               }
@@ -226,7 +231,7 @@ let montoMax = Math.max(...todosLosMontos.filter((m: number) => !isNaN(m)));
             scales: {
               x: {
                 type: 'time',
-                 min: fechaMin.getTime(), // ✅ convierte a number
+                 min: fechaMin.getTime(),
                 max: fechaMax.getTime(),
                 time: { unit: 'day' },
                 grid: { display: false },

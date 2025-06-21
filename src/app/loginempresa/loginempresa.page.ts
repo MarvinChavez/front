@@ -22,6 +22,10 @@ export class LoginempresaPage{
     passwordType: string = 'password';
     errorMessage: string = "";
   ngOnInit() {
+    const token = localStorage.getItem('access_token');
+  if (token) {
+    this.router.navigate(['/dia-ingreso']); // o dashboard
+  }
     this.lockOrientation();
   }
     constructor(private authService: AuthService, private router: Router,private menuCtrl: MenuController) {

@@ -103,10 +103,16 @@ export class AutoIngresoPage implements OnInit {
           const ctx = canvas.getContext('2d');
           if (!ctx) return;
     
-          // Destruir el gráfico si ya existe
+          let fechasOrdenadas = [...todasLasFechas].sort();
+          let fechaMin = new Date(fechasOrdenadas[0]);
+          let fechaMax = new Date(fechasOrdenadas[fechasOrdenadas.length - 1]);
+          fechaMax.setDate(fechaMax.getDate() + 1);
+          let todosLosMontos = data.autos.flatMap((ciudad: Ciudad) => ciudad.montos);
+          let montoMin = Math.min(...todosLosMontos.filter((m: number) => !isNaN(m)));
+          let montoMax = Math.max(...todosLosMontos.filter((m: number) => !isNaN(m)));
           if (this.chart) {
             this.chart.destroy();
-            this.chart = null;  // Limpiar la referencia
+            this.chart = null;  
           }
           const datasets = data.autos.map((ciudad: Ciudad, index: number) => {
             const montos = todasLasFechas.map(fecha => {
@@ -125,8 +131,9 @@ export class AutoIngresoPage implements OnInit {
               borderColor: this.getRandomColor(index),
               backgroundColor: this.getRandomColor(index),
               tension: 0.3,
-              pointRadius: 2.5,
-              pointHoverRadius: 6,
+              pointRadius: 3,
+              pointHoverRadius: 8,
+              pointHitRadius: 15,
               fill: false,
               spanGaps: true,
               pasajerosData: pasajerosData as any
@@ -175,7 +182,7 @@ export class AutoIngresoPage implements OnInit {
                   }
                 },
                 datalabels: {
-                  display: false // <-- Esto asegura que no se muestren labels sobre los puntos
+                  display: false 
                 },
                 zoom: {
                   pan: {
@@ -193,12 +200,24 @@ export class AutoIngresoPage implements OnInit {
                     drag: {
                       enabled: true
                     }
+                  },
+                  limits: {
+                  x: {
+                    min: fechaMin.getTime(),
+                    max: fechaMax.getTime()
+                  },
+                  y: {
+                    min: montoMin - 1000,
+                    max: montoMax + 1000
                   }
+                }
                 }
               },
               scales: {
                 x: {
                   type: 'time',
+                  min: fechaMin.getTime(), // ✅ convierte a number
+                max: fechaMax.getTime(),
                   time: { unit: 'day' },
                   grid: { display: false },
                   ticks: {
@@ -208,7 +227,9 @@ export class AutoIngresoPage implements OnInit {
                     minRotation: 0
                   }
                 },
-                y: {
+                y: { 
+                  min: montoMin - 1000,
+                  max: montoMax + 1000,
                   grid: { color: 'rgba(200, 200, 200, 0.1)' }
                 }
               }

@@ -127,7 +127,7 @@
     </ion-grid>
     <ion-card-header class="contenido-centrado">
   <ion-card-title class="ion-text-center">INGRESOS POR PLACA</ion-card-title>
-  <p>Importe Total: S/ {{ montoTotal }} - Pasajeros: {{ totalPasajeros | number:'1.0-0' }}</p>
+  <p>Importe Total: S/ {{ montoTotal | number:'1.0-0' }} - Pasajeros: {{ totalPasajeros | number:'1.0-0' }}</p>
   <p>{{ fecha_inicio | date: 'dd/MM/yyyy' }} - {{ fecha_fin | date: 'dd/MM/yyyy' }}</p>
 </ion-card-header>
     <ion-card-content>

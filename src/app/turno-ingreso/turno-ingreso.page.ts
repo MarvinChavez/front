@@ -151,8 +151,9 @@ let montoMax = Math.max(...todosLosMontos.filter((m: number) => !isNaN(m)));
               borderColor: this.getRandomColor(index),
               backgroundColor: this.getRandomColor(index),
               tension: 0.3,
-              pointRadius: 2.5,
-              pointHoverRadius: 6,
+               pointRadius: 3,
+              pointHoverRadius: 8,
+              pointHitRadius: 15,
               fill: false,
               spanGaps: true,
               pasajerosData: pasajerosData as any
@@ -169,6 +170,10 @@ let montoMax = Math.max(...todosLosMontos.filter((m: number) => !isNaN(m)));
             options: {
               responsive: true,
               maintainAspectRatio: false,
+              interaction: {
+                mode: 'nearest',
+                intersect: false
+              },
               plugins: {
                 legend: {
                   display: true,
@@ -226,8 +231,8 @@ let montoMax = Math.max(...todosLosMontos.filter((m: number) => !isNaN(m)));
                     max: fechaMax.getTime()
                   },
                   y: {
-                    min: montoMin - 10,
-                    max: montoMax + 10
+                    min: montoMin - 1000,
+                    max: montoMax + 1000
                   }
                 }
               }

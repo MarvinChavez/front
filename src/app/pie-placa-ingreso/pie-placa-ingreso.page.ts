@@ -145,8 +145,8 @@ export class PiePlacaIngresoPage implements OnInit {
                   label: (context) => {
                     const index = context.dataIndex;
                     const monto = datosAdicionales[index].monto.toLocaleString('en-US');
-                    const pasajeros = datosAdicionales[index].pasajeros;
-                    const porcentaje = datosAdicionales[index].porcentaje;
+                    const pasajeros = Math.round(datosAdicionales[index].pasajeros);
+                    const porcentaje = Math.round(datosAdicionales[index].porcentaje);
                     return `S/. ${monto} - ${pasajeros} pasajeros (${porcentaje}%)`;
                   },
                 },
@@ -154,8 +154,9 @@ export class PiePlacaIngresoPage implements OnInit {
               datalabels: {
                 formatter: (value, context) => {
                   const index = context.dataIndex;
-                  const pasajeros = datosAdicionales[index].pasajeros;
-                  return `S/. ${value.toLocaleString('en-US')}\nP(${pasajeros})`;
+                 const porcentaje = Math.round(datosAdicionales[index].porcentaje);
+                  return `S/. ${value.toLocaleString('en-US')}\n(${porcentaje}%)`;
+
                 },
                 color: '#fff',
                 font: {

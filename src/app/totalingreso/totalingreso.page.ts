@@ -139,14 +139,19 @@ if(this.contador==1){
         borderWidth: 2,
         tension: 0.2,
         pointBackgroundColor: 'rgba(75, 192, 192, 1)',
-        pointRadius: 2.5,
-        // @ts-ignore: propiedad personalizada para tooltip
+        pointRadius: 3,
+        pointHoverRadius: 8,
+        pointHitRadius: 15,
         pasajerosData: pasajeros
 } as ChartDataset<'line', number[]> & { pasajerosData?: number[] }]
     },
     options: {
       responsive: true,
       maintainAspectRatio: false,
+       interaction: {
+    mode: 'nearest',
+    intersect: false
+  },
       plugins: {
         legend: {
           display: true,
