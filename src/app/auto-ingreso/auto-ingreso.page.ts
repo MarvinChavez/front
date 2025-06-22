@@ -268,14 +268,10 @@ export class AutoIngresoPage implements OnInit {
       }
       getRandomColor(index: number, alpha: number = 1): string {
         const colors = [
-          'rgba(255, 99, 132, ALPHA)',
-          'rgba(54, 162, 235, ALPHA)',
-          'rgba(255, 206, 86, ALPHA)',
-          'rgba(75, 192, 192, ALPHA)',
-          'rgba(153, 102, 255, ALPHA)',
-          'rgba(255, 159, 64, ALPHA)'
+          '#3366CC', '#DC3912', '#FF9900', '#109618', '#990099',
+        '#0099C6', '#DD4477', '#66AA00', '#B82E2E', '#316395'
         ];
-        return colors[index % colors.length].replace('ALPHA', alpha.toString());
+        return colors[index % colors.length];
       }
     
       setPeriodo(tipo: string): void {

@@ -121,13 +121,12 @@ export class PiePlacaIngresoPage implements OnInit {
                 label: 'Porcentaje de Monto por Auto',
                 data: datosAdicionales.map((item) => item.monto),
                 backgroundColor: [
-                  'rgba(255, 99, 132, 0.6)',
-                  'rgba(54, 162, 235, 0.6)',
-                  'rgba(255, 206, 86, 0.6)',
-                  'rgba(75, 192, 192, 0.6)',
-                  'rgba(153, 102, 255, 0.6)',
-                  'rgba(255, 159, 64, 0.6)',
-                ],
+                '#3366CC', '#DC3912', '#FF9900', '#109618', '#990099',
+                '#0099C6', '#DD4477', '#66AA00', '#B82E2E', '#316395',
+                '#1F3A93', '#8B0000', '#4B0082','#006400', '#2F4F4F', 
+                '#483D8B','#800000', '#3B3B98','#2C3E50', '#1A1A1A' 
+              ],
+
                 borderWidth: 1,
               },
             ],
@@ -144,7 +143,8 @@ export class PiePlacaIngresoPage implements OnInit {
                 callbacks: {
                   label: (context) => {
                     const index = context.dataIndex;
-                    const monto = datosAdicionales[index].monto.toLocaleString('en-US');
+                    const valorRedondeado = Math.round(datosAdicionales[index].monto);
+                    const monto = valorRedondeado.toLocaleString('en-US');
                     const pasajeros = Math.round(datosAdicionales[index].pasajeros);
                     const porcentaje = Math.round(datosAdicionales[index].porcentaje);
                     return `S/. ${monto} - ${pasajeros} pasajeros (${porcentaje}%)`;
@@ -153,9 +153,13 @@ export class PiePlacaIngresoPage implements OnInit {
               },
               datalabels: {
                 formatter: (value, context) => {
-                  const index = context.dataIndex;
-                 const porcentaje = Math.round(datosAdicionales[index].porcentaje);
-                  return `S/. ${value.toLocaleString('en-US')}\n(${porcentaje}%)`;
+                 const index = context.dataIndex;
+                const porcentaje = Math.round(datosAdicionales[index].porcentaje);
+                const pasajeros = Math.round(datosAdicionales[index].pasajeros);
+                const valorRedondeado = Math.round(value);
+
+                return `S/. ${valorRedondeado.toLocaleString('en-US')}\nP=${pasajeros.toLocaleString('en-US')}\n(${porcentaje}%)`;
+
 
                 },
                 color: '#fff',

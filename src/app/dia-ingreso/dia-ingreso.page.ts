@@ -98,6 +98,10 @@ export class DiaIngresoPage implements OnInit {
         break;
     }
   }
+  onFechaInicioChange(nuevaFecha: string) {
+  this.setPeriodo('ruta');
+}
+
   crearGrafico(rutas: string[], montos: number[], pasajeros: number[]): void {
     const canvas = document.getElementById('graficoIngresos') as HTMLCanvasElement;
     if (!canvas) return;

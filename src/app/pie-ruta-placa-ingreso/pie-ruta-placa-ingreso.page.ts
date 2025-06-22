@@ -92,8 +92,10 @@ leyendaPersonalizada: { label:string, color: string, turnos: string, monto: stri
   ).subscribe(
     (data: IngresoData) => {
       const colores = [
-        '#3366CC', '#DC3912', '#FF9900', '#109618', '#990099',
-        '#0099C6', '#DD4477', '#66AA00', '#B82E2E', '#316395'
+                '#3366CC', '#DC3912', '#FF9900', '#109618', '#990099',
+                '#0099C6', '#DD4477', '#66AA00', '#B82E2E', '#316395',
+                '#1F3A93', '#8B0000', '#4B0082','#006400', '#2F4F4F', 
+                '#483D8B','#800000', '#3B3B98','#2C3E50', '#1A1A1A' 
       ];
 
       const labels = data.labels;
@@ -110,8 +112,8 @@ leyendaPersonalizada: { label:string, color: string, turnos: string, monto: stri
     color: backgroundColors[index],
     label: label, // 👈 agrega esto
     turnos: `Turnos: ${data.numeroTurnos[index]}`,
-    monto: `S/. ${montos[index].toFixed(2)}`,
-    pasajeros: `P: ${pasajeros[index]}`
+    monto: `S/. ${Number(montos[index]).toLocaleString('en-US', { maximumFractionDigits: 0 })}`,
+    pasajeros: `P=${pasajeros[index]}`
   });
   this.montoTotal=data.total;
   this.totalPasajeros=data.total_pasajeros_general;
@@ -153,9 +155,9 @@ leyendaPersonalizada: { label:string, color: string, turnos: string, monto: stri
                 label: (context) => {
                   const index = context.dataIndex;
                   const monto = montos[index].toLocaleString('en-US');
-                  const pas = pasajeros[index];
+                  const pas = pasajeros[index].toLocaleString('en-US');
                   const porcentaje = porcentajes ? Math.round(porcentajes[index]) : 0;
-                  return `S/. ${monto} - ${pas} pasajeros (${porcentaje}%)`;
+                  return `S/. ${monto}- ${pas} pasajeros (${porcentaje}%)`;
                 }
               }
             },
@@ -218,7 +220,11 @@ leyendaPersonalizada: { label:string, color: string, turnos: string, monto: stri
     this.mostrarFiltros = true; 
     this.montoTotal = 0;
     this.totalPasajeros = 0;
-   
+   if (this.chart) {
+      this.chart.destroy();
+    }
+  this.leyendaPersonalizada = [];
+
   }
   async lockOrientation() {
     try {
