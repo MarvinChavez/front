@@ -40,8 +40,8 @@ export class PieRutaPlacaIngresoPage implements OnInit {
   mostrarFiltros: boolean = true; 
   fechadevuelta: Date = new Date();
   empresa_id: number = 0;
-leyendaPersonalizada: { label:string, color: string, turnos: string, monto: string, pasajeros: string }[] = [];
-leyendaOrdenada: { label:string, color: string, turnos: string, monto: string, pasajeros: string }[] = [];
+leyendaPersonalizada: { label:string, color: string, turnos: string, monto: string, pasajeros: string, montoValor: number }[] = [];
+leyendaOrdenada: { label:string, color: string, turnos: string, monto: string, pasajeros: string,montoValor: number }[] = [];
 
   constructor(private ingresoService: IngresoService, private cdr: ChangeDetectorRef) {}
 
@@ -112,17 +112,16 @@ leyendaOrdenada: { label:string, color: string, turnos: string, monto: string, p
 
       labels.forEach((label, index) => {
   this.leyendaPersonalizada.push({
-    color: backgroundColors[index],
-    label: label, // 👈 agrega esto
-    turnos: `Turnos: ${data.numeroTurnos[index]}`,
-    monto: `S/. ${Number(montos[index]).toLocaleString('en-US', { maximumFractionDigits: 0 })}`,
-    pasajeros: `P=${pasajeros[index]}`
-  });
-this.leyendaOrdenada = [...this.leyendaPersonalizada].sort((a, b) => {
-  const montoA = parseFloat(a.monto.replace(/[^\d.-]/g, ''));
-  const montoB = parseFloat(b.monto.replace(/[^\d.-]/g, ''));
-  return montoB - montoA;
-});  this.montoTotal=data.total;
+  color: backgroundColors[index],
+  label: label,
+  turnos: `Turnos: ${data.numeroTurnos[index]}`,
+  monto: `S/. ${Number(montos[index]).toLocaleString('en-US', { maximumFractionDigits: 0 })}`,
+  pasajeros: `P=${pasajeros[index]}`,
+  montoValor: montos[index] // 👈 valor numérico real
+});
+
+this.leyendaOrdenada = [...this.leyendaPersonalizada].sort((a, b) => b.montoValor - a.montoValor);
+ this.montoTotal=data.total;
   this.totalPasajeros=data.total_pasajeros_general;
 });
 
@@ -176,11 +175,12 @@ this.leyendaOrdenada = [...this.leyendaPersonalizada].sort((a, b) => {
               },
               color: '#fff',
               font: {
-                weight: 'bold'
+                weight: 'bold',
+                size: 12
               },
               anchor: 'end', // 👈 esto posiciona cerca del borde
               align: 'end',  // 👈 esto lo alinea hacia la circunferencia
-              offset: -10    // 👈 opcional: ajusta más fino la posición hacia afuera o adentro
+              offset: -30    // 👈 opcional: ajusta más fino la posición hacia afuera o adentro
             },
             zoom: {
               pan: {
@@ -233,7 +233,7 @@ this.leyendaOrdenada = [...this.leyendaPersonalizada].sort((a, b) => {
    if (this.chart) {
       this.chart.destroy();
     }
-  this.leyendaPersonalizada = [];
+  this.leyendaOrdenada = [];
 
   }
   async lockOrientation() {
