@@ -214,7 +214,7 @@ height: auto;
   border: 2px solid #ccc;
 }
 .canvas-wrapper {
-  max-height: 500px; /* Ajusta según tu necesidad */
+  max-height: 300px; /* Ajusta según tu necesidad */
   overflow-y: auto;
   padding-right: 4px; /* espacio para scrollbar */
 }
@@ -282,6 +282,11 @@ canvas#graficoIngreso {
   height: 300px !important;
   touch-action: pan-y;
 }
+canvas#graficoIngresos {
+  width: 100% !important;
+  height: 500px !important;
+  touch-action: pan-y;
+}
 canvas#graficoAuto {
   width: 100% !important;
   height: 300px !important;
@@ -338,8 +343,6 @@ canvas#canvasComparacion {
 .canvas-wrapper2::-webkit-scrollbar-thumb:hover {
   background: #0f0568;
 }
-
-
 
 
 

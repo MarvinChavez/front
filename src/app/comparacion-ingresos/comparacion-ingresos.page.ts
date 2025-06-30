@@ -221,7 +221,8 @@ this.leyendaPersonalizada = etiquetas.map((label, i) => ({
           datalabels: {
             color: '#fff',
             font: {
-              weight: 'bold'
+              weight: 'bold',
+              size: 16
             },
             formatter: (value, context) => {
               const porcentaje = ((value as number) / total) * 100;

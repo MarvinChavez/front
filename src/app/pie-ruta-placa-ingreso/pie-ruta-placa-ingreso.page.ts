@@ -41,6 +41,7 @@ export class PieRutaPlacaIngresoPage implements OnInit {
   fechadevuelta: Date = new Date();
   empresa_id: number = 0;
 leyendaPersonalizada: { label:string, color: string, turnos: string, monto: string, pasajeros: string }[] = [];
+leyendaOrdenada: { label:string, color: string, turnos: string, monto: string, pasajeros: string }[] = [];
 
   constructor(private ingresoService: IngresoService, private cdr: ChangeDetectorRef) {}
 
@@ -53,6 +54,8 @@ leyendaPersonalizada: { label:string, color: string, turnos: string, monto: stri
     this.obtenerCiudades();
     this.obtenerFechaUltima();
   }
+
+
   obtenerFechaUltima(): void {
     this.ingresoService.obtenerFecha(this.empresa_id).subscribe(fecha => {
         this.fechadevuelta = new Date(fecha);
@@ -115,7 +118,11 @@ leyendaPersonalizada: { label:string, color: string, turnos: string, monto: stri
     monto: `S/. ${Number(montos[index]).toLocaleString('en-US', { maximumFractionDigits: 0 })}`,
     pasajeros: `P=${pasajeros[index]}`
   });
-  this.montoTotal=data.total;
+this.leyendaOrdenada = [...this.leyendaPersonalizada].sort((a, b) => {
+  const montoA = parseFloat(a.monto.replace(/[^\d.-]/g, ''));
+  const montoB = parseFloat(b.monto.replace(/[^\d.-]/g, ''));
+  return montoB - montoA;
+});  this.montoTotal=data.total;
   this.totalPasajeros=data.total_pasajeros_general;
 });
 
@@ -165,12 +172,15 @@ leyendaPersonalizada: { label:string, color: string, turnos: string, monto: stri
               formatter: (value, context) => {
                 const index = context.dataIndex;
                 const porcentaje = porcentajes ? Math.round(porcentajes[index]) : 0;
-                return `(${porcentaje}%)`;
+                return `${porcentaje}%`;
               },
               color: '#fff',
               font: {
                 weight: 'bold'
-              }
+              },
+              anchor: 'end', // 👈 esto posiciona cerca del borde
+              align: 'end',  // 👈 esto lo alinea hacia la circunferencia
+              offset: -10    // 👈 opcional: ajusta más fino la posición hacia afuera o adentro
             },
             zoom: {
               pan: {

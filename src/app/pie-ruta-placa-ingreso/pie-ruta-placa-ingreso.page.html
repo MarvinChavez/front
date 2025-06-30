@@ -106,7 +106,7 @@
   <div class="boton-container" *ngIf="!mostrarFiltros">
     <ion-button size="small" color="danger" (click)="limpiarFiltros()" class="ion-buttonf">Limpiar</ion-button>
   </div>
-  <ion-card>
+  <ion-card class="canvas-wrapper">
     <ion-grid>
       <ion-row class="botones-row">
         <ion-col size="auto">
@@ -146,13 +146,14 @@
     </div>
   </div> 
   </div>
-  <div style="display: flex; flex-direction: column; max-width: 250px;">
-    <div *ngFor="let item of leyendaPersonalizada"
+  <div style="display: flex; flex-direction: column; max-width: 350px;">
+    <div *ngFor="let item of leyendaOrdenada"
       style="margin-bottom: 10px; display: flex; align-items: center; gap: 8px; text-align: left;">
+      
       <div [style.background]="item.color" style="width: 12px; height: 12px;"></div>
      <div>
-  <strong>{{ item.label }}</strong><br>
-  {{ item.turnos }}- {{ item.monto }}-{{ item.pasajeros }}
+  <strong>{{ item.label }}</strong>
+  {{ item.turnos }} - {{ item.monto }} - {{ item.pasajeros }}
 </div>
 
     </div>
