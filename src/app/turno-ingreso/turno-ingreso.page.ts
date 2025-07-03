@@ -231,7 +231,7 @@ let montoMax = Math.max(...todosLosMontos.filter((m: number) => !isNaN(m)));
                     max: fechaMax.getTime()
                   },
                   y: {
-                    min: montoMin - 1000,
+                    min: 0,
                     max: montoMax + 1000
                   }
                 }

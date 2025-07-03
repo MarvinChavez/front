@@ -228,7 +228,7 @@ export class AutoIngresoPage implements OnInit {
                   }
                 },
                 y: { 
-                  min: montoMin - 1000,
+                  min: 0,
                   max: montoMax + 1000,
                   grid: { color: 'rgba(200, 200, 200, 0.1)' }
                 }

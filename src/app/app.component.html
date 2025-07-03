@@ -1,5 +1,5 @@
 <ion-app>
-  <ion-split-pane contentId="main-content">
+<ion-split-pane contentId="main-content" when="(max-width: 768px)">
     <!-- Menú lateral con botón para ocultarlo -->
     <ion-menu contentId="main-content" type="overlay" *ngIf="isAuthenticated()" #menu>
       <ion-content>

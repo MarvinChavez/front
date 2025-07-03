@@ -213,25 +213,82 @@ height: auto;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
   border: 2px solid #ccc;
 }
-.canvas-wrapper {
-  max-height: 400px; /* Ajusta según tu necesidad */
-  overflow-y: auto;
-  padding-right: 4px; /* espacio para scrollbar */
-}
+@media screen and (max-width: 768px) {
+  .canvas-wrapper {
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 4px;
+  }
 
-.canvas-wrapper::-webkit-scrollbar {
-  width: 12px;
-}
+  .canvas-wrapper::-webkit-scrollbar {
+    width: 12px;
+  }
 
-.canvas-wrapper::-webkit-scrollbar-thumb {
-  background: #073b6b;
-  border-radius: 4px;
-}
+  .canvas-wrapper::-webkit-scrollbar-thumb {
+    background: #073b6b;
+    border-radius: 4px;
+  }
 
-.canvas-wrapper::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
+  .canvas-wrapper::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
 
+  .canvas-wrapper2 {
+    max-height: 500px;
+    max-width: 800px;
+    overflow-y: auto;
+    padding-right: 4px;
+  }
+
+  .canvas-wrapper2::-webkit-scrollbar {
+    width: 12px;
+  }
+
+  .canvas-wrapper2::-webkit-scrollbar-thumb {
+    background: #6b0909;
+    border-radius: 4px;
+  }
+
+  .canvas-wrapper2::-webkit-scrollbar-thumb:hover {
+    background: #0f0568;
+  }
+
+  .scroll-edge {
+    width: 20px;
+    overflow-y: auto;
+    touch-action: pan-y;
+    height: 100%;
+    position: relative;
+    background-color: transparent;
+  }
+
+  .scroll-fill {
+    height: 310px;
+  }
+
+  .scroll-edge::-webkit-scrollbar {
+    width: 30px;
+  }
+
+  .scroll-edge::-webkit-scrollbar-track {
+    background: #15b49a;
+  }
+
+  .scroll-edge::-webkit-scrollbar-thumb {
+    background: #1599b9;
+    border-radius: 2px;
+  }
+
+  .scroll-edge::-webkit-scrollbar-thumb:hover {
+    background: #091263;
+  }
+}
+.canvas-wrapper,
+.canvas-wrapper2,
+.scroll-edge {
+  overflow-y: unset;
+  max-height: unset;
+}
 
 .canvas-padding-container {
   display: flex;
@@ -244,34 +301,7 @@ height: auto;
   padding: 2px 0;
   overflow: hidden;
 }
-.scroll-edge {
-  width: 20px;
-  overflow-y: auto;
-  touch-action: pan-y;
-  height: 100%;
-  position: relative;
-  background-color: transparent;
-}
-.scroll-fill {
-  height: 310px; /* más grande que .canvas-wrapper para que se muestre la barra */
-}
 
-.scroll-edge::-webkit-scrollbar {
-  width: 30px;
-}
-
-.scroll-edge::-webkit-scrollbar-track {
-  background: #15b49a;
-}
-
-.scroll-edge::-webkit-scrollbar-thumb {
-  background: #1599b9;
-  border-radius: 2px;
-}
-
-.scroll-edge::-webkit-scrollbar-thumb:hover {
-  background: #091263;
-}
 canvas#graficoCanvas {
   width: 100% !important;
   height: 300px !important;
@@ -342,6 +372,28 @@ canvas#canvasComparacion {
 
 .canvas-wrapper2::-webkit-scrollbar-thumb:hover {
   background: #0f0568;
+}
+@media screen and (min-width: 769px) {
+  canvas#graficoCanvas,
+  canvas#graficoIngreso,
+  canvas#graficoIngresos,
+  canvas#graficoAuto,
+  canvas#graficoRuta,
+  canvas#graficoTurno,
+  canvas#graficoPieAuto,
+  canvas#graficoPieRPlaca,
+  canvas#graficoPieRuta,
+  canvas#canvasComparacion {
+    height: 500px !important; /* o el tamaño más grande que desees en escritorio */
+  }
+
+  canvas#graficoIngresos {
+    height: 700px !important; /* puedes hacer excepciones si quieres uno más grande */
+  }
+
+  canvas#canvasComparacion {
+    height: 200px !important;
+  }
 }
 
 
